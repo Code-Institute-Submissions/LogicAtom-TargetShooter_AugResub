@@ -175,12 +175,12 @@ function startup() {
 
 document.addEventListener("DOMContentLoaded", startup);
 {
-  shootBullet();
+  preventDefault();
 }
 
 // event listeners
 function keyDown(/** @type [KeyboardEvent] */ ev) {
-  event.preventDefault();
+  preventDefault();
   if (hunter.dead) {
     return;
   }
@@ -211,6 +211,7 @@ function keyDown(/** @type [KeyboardEvent] */ ev) {
 }
 
 function keyUp(/** @type [KeyboardEvent] */ ev) {
+  preventDefault();
   if (hunter.dead) {
     return;
   }
