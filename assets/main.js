@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", startup);
 
 // event listeners
 function keyDown(/** @type [KeyboardEvent] */ ev) {
-  preventDefault();
+  ev.preventDefault();
   if (hunter.dead) {
     return;
   }
@@ -211,7 +211,7 @@ function keyDown(/** @type [KeyboardEvent] */ ev) {
 }
 
 function keyUp(/** @type [KeyboardEvent] */ ev) {
-  preventDefault();
+  ev.preventDefault();
   if (hunter.dead) {
     return;
   }
