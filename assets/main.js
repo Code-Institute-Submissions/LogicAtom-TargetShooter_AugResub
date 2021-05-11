@@ -175,13 +175,12 @@ function startup() {
 
 document.addEventListener("DOMContentLoaded", startup);
 {
-  preventDefault();
+  
 }
 
 // event listeners
 function keyDown(/** @type [KeyboardEvent] */ ev) {
-  ev.preventDefault();
-  if (hunter.dead) {
+    if (hunter.dead) {
     return;
   }
 
