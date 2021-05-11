@@ -34,10 +34,6 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
-/*function setup (){
-  createCanvas (600, 600);
-  background(0);
-} */
 /** @type {HTMLCanvasElement} */
 var canv = document.getElementById("Canvas");
 var ctx = canv.getContext("2d");
@@ -184,6 +180,7 @@ document.addEventListener("DOMContentLoaded", startup);
 
 // event listeners
 function keyDown(/** @type [KeyboardEvent] */ ev) {
+  event.preventDefault();
   if (hunter.dead) {
     return;
   }
