@@ -34,9 +34,47 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
+function disableScrolling() {
+    var x=window.scrollX;
+    var y=window.scrollY;
+    window.onscroll=function(){window.scrollTo(x, y);};
+}
+
 /** @type {HTMLCanvasElement} */
+//var canv = document.getElementById("Canvas");
+
+
 var canv = document.getElementById("Canvas");
 var ctx = canv.getContext("2d");
+//var canvasWidth = window.innerWidth;
+
+ 
+ 
+    // Set canvas dimensions
+   // canvas.width = window.innerWidth;
+    //canvas.height = window.innerHeight;
+
+/*
+  var canvas;
+      var canvasWidth;
+      var ctx;
+ 
+      function init() {
+        canvas = document.getElementById("Canvas");
+        if (canvas.getContext) {
+          ctx = canvas.getContext("2d");
+ 
+          window.addEventListener('resize', resizeCanvas, false);
+          window.addEventListener('orientationchange', resizeCanvas, false);
+          resizeCanvas();
+        }
+      }
+ 
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      */
 
 // set up game parameters
 var level, lives, targets, score, scoreHigh, hunter, text, textAlpha;
@@ -435,8 +473,9 @@ function update() {
   // tick the music
   music.tick();
 
-  ctx.fillStyle = "gray"; // canvas background color
-  ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
+ctx.fillStyle = "black"; // canvas background color
+  
+ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
 
   // accelerate the hunter
   if (hunter.accelerateing && !hunter.dead) {
