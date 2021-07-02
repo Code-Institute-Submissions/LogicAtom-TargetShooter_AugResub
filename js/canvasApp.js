@@ -34,6 +34,11 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
+window.addEventListener("load", eventWindowLoaded, false);
+function eventWindowLoaded() {
+  canvasApp();
+}
+
 function disableScrolling() {
     var x=window.scrollX;
     var y=window.scrollY;
