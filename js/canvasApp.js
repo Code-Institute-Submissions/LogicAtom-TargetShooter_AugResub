@@ -54,25 +54,6 @@ function canvasApp() {
     ctx = canv.getContext('2d');
   }
 
-  //application states
-  const GAME_STATE_INIT = 0;
-  const GAME_STATE_WAIT_FOR_LOAD = 5;
-  const GAME_STATE_TITLE = 10;
-  const GAME_STATE_NEW_GAME = 20;
-  const GAME_STATE_NEW_LEVEL = 30;
-  const GAME_STATE_PLAYER_START = 40;
-  const GAME_STATE_PLAY_LEVEL = 50;
-  const GAME_STATE_PLAYER_DIE = 60;
-  const GAME_STATE_GAME_OVER = 70;
-  var currentGameState = 0;
-  var currentGameStateFunction = null;
-
-  //title screen
-  var titleStarted = false;
-
-  //gameover screen
-  var gameOverStarted = false;
-
   function supportedAudioFormat(audio) {
     var returnExtension = "";
     if (audio.canPlayType("audio/ogg") == "probably" || audio.canPlayType("audio/ogg") == "maybe") {
@@ -84,7 +65,6 @@ function canvasApp() {
     }
 
     return returnExtension;
-
   }
 
   function disableScrolling() {
