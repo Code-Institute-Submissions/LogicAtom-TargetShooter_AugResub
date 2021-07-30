@@ -34,6 +34,10 @@ Feature 2  - has interactive functionality via the keyboard arrow buttons.
 = Trackpad functionality
 = Audio controls
 
+#### Currently fixing
+= Mouse functionality
+= Touch functionality
+
 ## Technologies Used
 HTML5 Canvas - https://en.wikipedia.org/wiki/HTML5, https://html.spec.whatwg.org/multipage/
 CSS3 - https://www.w3.org/Style/CSS/Overview.en.html
@@ -43,16 +47,15 @@ Vanilla JavaScript - https://www.javascript.com/
 I have performed extensive testing on each and every step of this project.
 I had 4 other testers with different operating systems test as well and no errors.
 
-This project fills the entire screen for all Mobile browsers.
-On non-mobile, the canvas element is half the size of the browser.
+#### Currently testing
+= RWD Canvas API controls, using code referenced from a physical book named: HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
 
 ## Deployment
 
 I uploaded the project directly to Github using Github Desktop and pushed the project to Github Pages.
 
 ## Credits
-freecodecamp for writing an awesome tutorial
-Ed Logg and Lyle Rains for being the original creators of Asteroids
+Anthony Kozloski - Coder
 
 ### Content
 HTML5 Canvas - https://en.wikipedia.org/wiki/HTML5, https://html.spec.whatwg.org/multipage/
@@ -65,3 +68,7 @@ I took pictures of my design wireframe, mockup, and diagram from my dry erase bo
 ### Acknowledgements
 I got inspiration for this project from the Asteroids game tutorial on youtube from freecodecamp
 - https://www.youtube.com/watch?v=H9CSWMxJx84
+
+Ed Logg and Lyle Rains for being the original creators of Asteroids
+
+HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
