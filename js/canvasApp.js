@@ -40,9 +40,9 @@ function eventWindowLoaded() {
 }
 
 function disableScrolling() {
-    var x=window.scrollX;
-    var y=window.scrollY;
-    window.onscroll=function(){window.scrollTo(x, y);};
+  var x = window.scrollX;
+  var y = window.scrollY;
+  window.onscroll = function () { window.scrollTo(x, y); };
 }
 
 /** @type {HTMLCanvasElement} */
@@ -51,13 +51,15 @@ function disableScrolling() {
 
 var canv = document.getElementById("Canvas");
 var ctx = canv.getContext("2d");
+
+
 //var canvasWidth = window.innerWidth;
 
- 
- 
-    // Set canvas dimensions
-   // canvas.width = window.innerWidth;
-    //canvas.height = window.innerHeight;
+
+
+// Set canvas dimensions
+// canvas.width = window.innerWidth;
+//canvas.height = window.innerHeight;
 
 /*
   var canvas;
@@ -80,6 +82,7 @@ var ctx = canv.getContext("2d");
         canvas.height = window.innerHeight;
       }
       */
+
 
 // set up game parameters
 var level, lives, targets, score, scoreHigh, hunter, text, textAlpha;
@@ -120,8 +123,8 @@ function drawTargets() {
 }
 
 function distBetweenPoints(x1, y1, x2, y2) {
-    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  }
+  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
 
 function destroyTarget(index) {
   var x = targets[index].x;
@@ -129,7 +132,7 @@ function destroyTarget(index) {
   var r = targets[index].r;
 
   // split the target into smaller pieces when shot
-   if (r == Math.ceil(TARGETS_SIZE / 2)) {
+  if (r == Math.ceil(TARGETS_SIZE / 2)) {
     targets.push(newTarget(x, y, Math.ceil(TARGETS_SIZE / 4)));
     targets.push(newTarget(x, y, Math.ceil(TARGETS_SIZE / 4)));
     targets.push(newTarget(x, y, Math.ceil(TARGETS_SIZE / 4)));
@@ -218,12 +221,12 @@ function startup() {
 
 document.addEventListener("DOMContentLoaded", startup);
 {
-  
+
 }
 
 // event listeners
 function keyDown(/** @type [KeyboardEvent] */ ev) {
-    if (hunter.dead) {
+  if (hunter.dead) {
     return;
   }
 
@@ -285,36 +288,36 @@ function keyUp(/** @type [KeyboardEvent] */ ev) {
 
 function setupGamePadController() {
 
-document.addEventListener('touchmove', (event) => {
-event.preventDefault();
-},  {passive: false });
+  document.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+  }, { passive: false });
 
-LEFT_BUTTON.addEventListener("touchstart", ()=> {
-keysArray[KEY_LEFT_ARROW] = true;
-});
-LEFT_BUTTON.addEventListener("touchend", ()=> {
-keysArray[KEY_LEFT_ARROW] = false;
-});
-RIGHT_BUTTON.addEventListener("touchstart", ()=> {
-keysArray[KEY_RIGHT_ARROW] = true;
-});
-RIGHT_BUTTON.addEventListener("touchend", ()=> {
-keysArray[KEY_RIGHT_ARROW] = false;
-});
-FIRE_BUTTON.addEventListener("touchstart", ()=> {
-if(hunter.visible) {
-if(_soundfxOn == ON) {
-FIRE_SOUND.play();
-}
-bulletsArray.push(new Bullet(hunter.angle));
-}
-});
-ACCELERATE_BUTTON.addEventListener("touchstart", ()=> {
-keysArray[KEY_UP_ARROW] = true;
-});
-ACCELERATE_BUTTON.addEventListener("touchend", ()=> {
-keysArray[KEY_UP_ARROW] = false;
-});
+  LEFT_BUTTON.addEventListener("touchstart", () => {
+    keysArray[KEY_LEFT_ARROW] = true;
+  });
+  LEFT_BUTTON.addEventListener("touchend", () => {
+    keysArray[KEY_LEFT_ARROW] = false;
+  });
+  RIGHT_BUTTON.addEventListener("touchstart", () => {
+    keysArray[KEY_RIGHT_ARROW] = true;
+  });
+  RIGHT_BUTTON.addEventListener("touchend", () => {
+    keysArray[KEY_RIGHT_ARROW] = false;
+  });
+  FIRE_BUTTON.addEventListener("touchstart", () => {
+    if (hunter.visible) {
+      if (_soundfxOn == ON) {
+        FIRE_SOUND.play();
+      }
+      bulletsArray.push(new Bullet(hunter.angle));
+    }
+  });
+  ACCELERATE_BUTTON.addEventListener("touchstart", () => {
+    keysArray[KEY_UP_ARROW] = true;
+  });
+  ACCELERATE_BUTTON.addEventListener("touchend", () => {
+    keysArray[KEY_UP_ARROW] = false;
+  });
 }
 
 /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
@@ -478,9 +481,9 @@ function update() {
   // tick the music
   music.tick();
 
-ctx.fillStyle = "black"; // canvas background color
-  
-ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
+  ctx.fillStyle = "black"; // canvas background color
+
+  ctx.fillRect(0, 0, canv.width, 440); // draw the background
 
   // accelerate the hunter
   if (hunter.accelerateing && !hunter.dead) {
@@ -526,23 +529,23 @@ ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
     if (blinkOn && !hunter.dead) {
       // added && !hunter.dead combined with other lines to not draw a new hunter when game is over
       drawHunter(hunter.x, hunter.y, hunter.a);
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = HUNTER_SIZE / 20;
-        ctx.beginPath();
-        ctx.moveTo(  // nose of the hunter
-            hunter.x + 4 / 3 * hunter.r * Math.cos(hunter.a),
-            hunter.y - 4 / 3 * hunter.r * Math.sin(hunter.a)
-                  );
-        ctx.lineTo( // rear left
-            hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) + Math.sin(hunter.a)),
-            hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) - Math.cos(hunter.a))
-                  );
-        ctx.lineTo( // rear right
-            hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) - Math.sin(hunter.a)),
-            hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) + Math.cos(hunter.a))
-                  );
-        ctx.closePath();
-        ctx.stroke();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = HUNTER_SIZE / 20;
+      ctx.beginPath();
+      ctx.moveTo(  // nose of the hunter
+        hunter.x + 4 / 3 * hunter.r * Math.cos(hunter.a),
+        hunter.y - 4 / 3 * hunter.r * Math.sin(hunter.a)
+      );
+      ctx.lineTo( // rear left
+        hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) + Math.sin(hunter.a)),
+        hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) - Math.cos(hunter.a))
+      );
+      ctx.lineTo( // rear right
+        hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) - Math.sin(hunter.a)),
+        hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) + Math.cos(hunter.a))
+      );
+      ctx.closePath();
+      ctx.stroke();
     }
 
     // handle blinking
@@ -624,81 +627,81 @@ ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
     }
   }
 
-    // center dot
-    if (SHOW_CENTER_DOT) {
-      ctx.fillStyle = "brown";
-      ctx.fillRect(hunter.x - 1, hunter.y - 1, 2, 2);
+  // center dot
+  if (SHOW_CENTER_DOT) {
+    ctx.fillStyle = "brown";
+    ctx.fillRect(hunter.x - 1, hunter.y - 1, 2, 2);
+  }
+
+  // draw the bullets
+  for (
+    var bulletExplosionColor = 0;
+    bulletExplosionColor < hunter.bullets.length;
+    bulletExplosionColor++
+  ) {
+    if (hunter.bullets[bulletExplosionColor].explodeTime == 0) {
+      ctx.fillStyle = "gold";
+      ctx.beginPath();
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        HUNTER_SIZE / 15,
+        0,
+        Math.PI * 2,
+        false
+      );
+      ctx.fill();
+    } else {
+      // draw the explosion
+      ctx.fillStyle = "silver";
+      ctx.beginPath();
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        hunter.r * 0.75,
+        0,
+        Math.PI * 2,
+        false
+      );
+      ctx.fill();
+      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        hunter.r * 0.5,
+        0,
+        Math.PI * 2,
+        false
+      );
+      ctx.fill();
+      ctx.fillStyle = "yellow";
+      ctx.beginPath();
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        hunter.r * 0.25,
+        0,
+        Math.PI * 2,
+        false
+      );
+      ctx.fill();
     }
+  }
 
-      // draw the bullets
-      for (
-        var bulletExplosionColor = 0;
-        bulletExplosionColor < hunter.bullets.length;
-        bulletExplosionColor++
-      ) {
-        if (hunter.bullets[bulletExplosionColor].explodeTime == 0) {
-          ctx.fillStyle = "gold";
-          ctx.beginPath();
-          ctx.arc(
-            hunter.bullets[bulletExplosionColor].x,
-            hunter.bullets[bulletExplosionColor].y,
-            HUNTER_SIZE / 15,
-            0,
-            Math.PI * 2,
-            false
-          );
-          ctx.fill();
-        } else {
-          // draw the explosion
-          ctx.fillStyle = "silver";
-          ctx.beginPath();
-          ctx.arc(
-            hunter.bullets[bulletExplosionColor].x,
-            hunter.bullets[bulletExplosionColor].y,
-            hunter.r * 0.75,
-            0,
-            Math.PI * 2,
-            false
-          );
-          ctx.fill();
-          ctx.fillStyle = "black";
-          ctx.beginPath();
-          ctx.arc(
-            hunter.bullets[bulletExplosionColor].x,
-            hunter.bullets[bulletExplosionColor].y,
-            hunter.r * 0.5,
-            0,
-            Math.PI * 2,
-            false
-          );
-          ctx.fill();
-          ctx.fillStyle = "yellow";
-          ctx.beginPath();
-          ctx.arc(
-            hunter.bullets[bulletExplosionColor].x,
-            hunter.bullets[bulletExplosionColor].y,
-            hunter.r * 0.25,
-            0,
-            Math.PI * 2,
-            false
-          );
-          ctx.fill();
-        }
-      }
+  // draw the game text
+  if (textAlpha >= 0) {
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
+    ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
+    ctx.fillText(text, canv.width / 2, canv.height * 0.75);
+    textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
+  } else if (hunter.dead) {
+    newGame();
+  }
 
-        // draw the game text
-        if (textAlpha >= 0) {
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
-          ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-          ctx.fillText(text, canv.width / 2, canv.height * 0.75);
-          textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
-        } else if (hunter.dead) {
-          newGame();
-        }
-
-   // draw the lives
+  // draw the lives
   var lifeColor; // change color of remaining lives
   for (var hunterLivesColor = 0; hunterLivesColor < lives; hunterLivesColor++) {
     lifeColor = exploding && hunterLivesColor == lives - 1 ? "red" : "green"; // this line references var lifeColor above
@@ -814,7 +817,7 @@ ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
 
   // move the bullets
   for (var moveBullets = hunter.bullets.length - 1; moveBullets >= 0; moveBullets--) {
-    
+
     // check the distance travelled
     if (hunter.bullets[moveBullets].dist > BULLET_DIST * canv.width) {
       hunter.bullets.splice(moveBullets, 1); // delete one
@@ -839,7 +842,7 @@ ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
     // calculate the bullets distance travelled
     hunter.bullets[moveBullets].dist += Math.sqrt(
       Math.pow(hunter.bullets[moveBullets].xv, 2) +
-        Math.pow(hunter.bullets[moveBullets].yv, 2)
+      Math.pow(hunter.bullets[moveBullets].yv, 2)
     );
 
     // handle edge of the screen
