@@ -2,7 +2,7 @@
 
 // CONSTANTS: constants start at their default inital values always
 const FPS = 30; // frames per second of animations
-const GAME_LIVES = 4; // starting number of game lives, default = 3
+const GAME_LIVES = 3; // starting number of game lives, default = 3
 
 const BULLET_MAX = 5; // maximum number of bullets on the screen at any one time, default = 10
 const BULLET_SPD = 1000; // speed of bullets in pixels per second, 500 = default
@@ -18,14 +18,14 @@ const TARGETS_SIZE = 100; // starting size of targets in pixels. 100 = default
 const TARGETS_SPD = 50; // max starting speed of targets in pixels per second. 50 = default
 const TARGETS_VERT = 8; // average number of vertices on each target. 10 = default
 
-const HUNTER_SIZE = 33; // hunter height in pixels. 30 = default
+const HUNTER_SIZE = 30; // hunter height in pixels. 30 = default
 const HUNTER_ACCELERATE = 6; // acceleration of the hunter in pixels per second per second - physics. 5 = default
 const HUNTER_INV_DUR = 3; // duration of the hunter's invincibility in seconds. 3 = default
 const HUNTER_BLINK_DUR = 0.1; // duration in seconds of a single blink during hunters invincibility. 0.1 = default
 const HUNTER_EXPLODE_DUR = 0.4; // duration of the hunter's explosion in seconds. 0.3 = default
 const FRICTION = 0.5; // friction coefficient (0 = no friction, 1 = lots of friction, 0.7 = default)
 
-const SOUND_ON = false; // rotates game sounds on and off, false = off, true = on. on = default
+const SOUND_ON = true; // rotates game sounds on and off, false = off, true = on. on = default
 const MUSIC_ON = false; // rotates game music background on and off, true = on, false = off. on = default
 const ROTATE_SPEED = 360; // rotate speed in degrees per second. 360 = default
 const SHOW_CENTER_DOT = false; // show or hide hunter's center dot of gravity. false = default. true is for debugging.
@@ -34,9 +34,29 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
-window.addEventListener("load", eventWindowLoaded, false);
+window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
+
   canvasApp();
+
+}
+
+function canvasSupport() {
+  return Modernizr.canvas;
+}
+
+function supportedAudioFormat(audio) {
+  var returnExtension = "";
+  if (audio.canPlayType("audio/ogg") == "probably" || audio.canPlayType("audio/ogg") == "maybe") {
+    returnExtension = "ogg";
+  } else if (audio.canPlayType("audio/wav") == "probably" || audio.canPlayType("audio/wav") == "maybe") {
+    returnExtension = "wav";
+  } else if (audio.canPlayType("audio/wav") == "probably" || audio.canPlayType("audio/wav") == "maybe") {
+    returnExtension = "mp3";
+  }
+
+  return returnExtension;
+
 }
 
 function disableScrolling() {
@@ -174,8 +194,8 @@ function drawHunter(x, y, a, color = "limegreen") {
   ctx.beginPath();
   ctx.moveTo(
     // nose of the hunter
-    x + (5 / 3) * hunter.r * Math.cos(a), // default:  4 / 3
-    y - (5 / 3) * hunter.r * Math.sin(a) // default:  4 / 3
+    x + (4 / 3) * hunter.r * Math.cos(a), // default:  4 / 3
+    y - (4 / 3) * hunter.r * Math.sin(a) // default:  4 / 3
   );
   ctx.lineTo(
     // rear left
@@ -483,7 +503,7 @@ function update() {
 
   ctx.fillStyle = "black"; // canvas background color
 
-  ctx.fillRect(0, 0, canv.width, 440); // draw the background
+  ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
 
   // accelerate the hunter
   if (hunter.accelerateing && !hunter.dead) {
@@ -757,6 +777,7 @@ function update() {
       }
     }
   }
+
   //check for target collisions
   if (!exploding) {
     if (hunter.blinkNum == 0 && !hunter.dead) {

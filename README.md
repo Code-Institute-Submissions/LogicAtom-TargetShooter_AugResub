@@ -47,6 +47,10 @@ Vanilla JavaScript - https://www.javascript.com/
 I have performed extensive testing on each and every step of this project.
 I had 4 other testers with different operating systems test as well and no errors.
 
+Game window screen attempting to move the lives and score off of the main game screen...I tried changing the drawScreen function, ctx.fillRect attribute for height -20px = result is a failure as the targets and the ship can travel into that empty space and cause unexpected visual distortions.
+
+
+
 #### Currently testing
 = RWD Canvas API controls, using code referenced from a physical book named: HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
 
