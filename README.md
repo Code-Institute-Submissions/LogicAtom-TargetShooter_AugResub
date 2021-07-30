@@ -42,6 +42,7 @@ Feature 2  - has interactive functionality via the keyboard arrow buttons.
 HTML5 Canvas - https://en.wikipedia.org/wiki/HTML5, https://html.spec.whatwg.org/multipage/
 CSS3 - https://www.w3.org/Style/CSS/Overview.en.html
 Vanilla JavaScript - https://www.javascript.com/
+Modernizr - https://modernizr.com/
 
 ## Testing
 I have performed extensive testing on each and every step of this project.
@@ -49,7 +50,7 @@ I had 4 other testers with different operating systems test as well and no error
 
 Game window screen attempting to move the lives and score off of the main game screen...I tried changing the drawScreen function, ctx.fillRect attribute for height -20px = result is a failure as the targets and the ship can travel into that empty space and cause unexpected visual distortions.
 
-
+http://mobilehtml5.org/ = used to verify compatibility features.
 
 #### Currently testing
 = RWD Canvas API controls, using code referenced from a physical book named: HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
@@ -76,3 +77,7 @@ I got inspiration for this project from the Asteroids game tutorial on youtube f
 Ed Logg and Lyle Rains for being the original creators of Asteroids
 
 HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
+
+https://modernizr.com/
+
+
