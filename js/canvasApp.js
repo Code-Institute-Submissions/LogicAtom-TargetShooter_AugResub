@@ -211,11 +211,7 @@ function canvasApp() {
     el.addEventListener("touchmove", handleMove, false);
   }
 
-  document.addEventListener("DOMContentLoaded", startup);
-  {
-
-  }
-
+  
   // event listeners
   function keyDown(/** @type [KeyboardEvent] */ ev) {
     if (hunter.dead) {
@@ -278,39 +274,6 @@ function canvasApp() {
     }
   }
 
-  function setupGamePadController() {
-
-    document.addEventListener('touchmove', (event) => {
-      event.preventDefault();
-    }, { passive: false });
-
-    LEFT_BUTTON.addEventListener("touchstart", () => {
-      keysArray[KEY_LEFT_ARROW] = true;
-    });
-    LEFT_BUTTON.addEventListener("touchend", () => {
-      keysArray[KEY_LEFT_ARROW] = false;
-    });
-    RIGHT_BUTTON.addEventListener("touchstart", () => {
-      keysArray[KEY_RIGHT_ARROW] = true;
-    });
-    RIGHT_BUTTON.addEventListener("touchend", () => {
-      keysArray[KEY_RIGHT_ARROW] = false;
-    });
-    FIRE_BUTTON.addEventListener("touchstart", () => {
-      if (hunter.visible) {
-        if (_soundfxOn == ON) {
-          FIRE_SOUND.play();
-        }
-        bulletsArray.push(new Bullet(hunter.angle));
-      }
-    });
-    ACCELERATE_BUTTON.addEventListener("touchstart", () => {
-      keysArray[KEY_UP_ARROW] = true;
-    });
-    ACCELERATE_BUTTON.addEventListener("touchend", () => {
-      keysArray[KEY_UP_ARROW] = false;
-    });
-  }
 
   /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
 
@@ -515,7 +478,7 @@ function canvasApp() {
     sfxAccelerate.stop(); // stops the accelerate sound when the forward key is released.
   }
 
-  //draw a traingular hunter
+  //draw a triangular hunter
   if (!exploding) {
     // if hunter is not exploding
     if (blinkOn && !hunter.dead) {
@@ -538,6 +501,9 @@ function canvasApp() {
       );
       ctx.closePath();
       ctx.stroke();
+
+      canv.addEventListener("mousemove", onMouseMove, false);
+      canv.addEventListener("touchmove", onTouchMove, false);
     }
 
     // handle blinking
@@ -879,7 +845,7 @@ function canvasApp() {
     }
   }
   
-
+/*
   //playfield
   var xMin = 0;
   var xMax = 480;
@@ -1224,4 +1190,4 @@ function canvasApp() {
       console.log("mouseY=" + mouseY);
     }
   }
-}
+} */
