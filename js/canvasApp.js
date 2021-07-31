@@ -45,7 +45,7 @@ function eventWindowLoaded() {
   canvasApp();
 
   canv.addEventListener("mousemove", onmousemove, false);
-  canv.addEventListener("touchmove", ontouchmove, false);
+  canv.addEventListener("touchmove", onTouchMove, false);
 }
 
 function canvasSupport() {
