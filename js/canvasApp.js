@@ -57,6 +57,7 @@ function canvasApp() {
   }
 
 
+
   function disableScrolling() {
     var x = window.scrollX;
     var y = window.scrollY;
@@ -72,18 +73,18 @@ function canvasApp() {
 
   /* ************** AUDIO - SECTION BEGINNING ************** */
 
-  /*// set up sound effects
+  // set up sound effects
   // associated with function Sound(), which is right above the update function
   var sfxBullet = new Sound("sounds/bullethitwav.mp3", 5, 0.5);
   var sfxExplode = new Sound("sounds/explode2.mp3"); // associated with function explodeHunter()
   var sfxHit = new Sound("sounds/hit.mp3", 5);
   var sfxAccelerate = new Sound("sounds/accelerate.m4a");
-  
+
   // set up the music
   var music = new Music("sounds/music-low.m4a", "sounds/music-high.m4a");
-  // make the music incrementally faster 
+  // make the music incrementally faster
   var targetsLeft, targetsTotal; // a ratio of how many there are left compared to the total(to use as a guide)
-  
+
   /* ************** AUDIO - SECTION ENDING ************** */
 
   /* drawTargets, builds targets at random coordinates on the canvas (canv.width and canv.height) */
@@ -132,7 +133,7 @@ function canvasApp() {
 
     // destroy the target
     targets.splice(index, 1);
-    /* sfxHit.play(); */
+    sfxHit.play();
 
     // calculate the ratio of remaining targets to determine music tempo
     targetsLeft--; // decrement
@@ -153,8 +154,8 @@ function canvasApp() {
     ctx.beginPath();
     ctx.moveTo(
       // nose of the hunter
-      x + (4 / 3) * hunter.r * Math.cos(a), // default:  4 / 3
-      y - (4 / 3) * hunter.r * Math.sin(a) // default:  4 / 3
+      x + (5 / 3) * hunter.r * Math.cos(a), // default:  4 / 3
+      y - (5 / 3) * hunter.r * Math.sin(a) // default:  4 / 3
     );
     ctx.lineTo(
       // rear left
@@ -187,6 +188,21 @@ function canvasApp() {
   // ("in-built event to listen for", function that responds to the occurred event)
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
+
+  // This sets up all the event listeners for our <canvas> element so we can handle the touch events as they occur.
+  // When the page loads, the startup() function shown below will be called.
+  function startup() {
+    var el = document.getElementById("Canvas");
+    el.addEventListener("touchstart", handleStart, false);
+    el.addEventListener("touchend", handleEnd, false);
+    el.addEventListener("touchcancel", handleCancel, false);
+    el.addEventListener("touchmove", handleMove, false);
+  }
+
+  document.addEventListener("DOMContentLoaded", startup);
+  {
+
+  }
 
   // event listeners
   function keyDown(/** @type [KeyboardEvent] */ ev) {
@@ -250,6 +266,39 @@ function canvasApp() {
     }
   }
 
+  function setupGamePadController() {
+
+    document.addEventListener('touchmove', (event) => {
+      event.preventDefault();
+    }, { passive: false });
+
+    LEFT_BUTTON.addEventListener("touchstart", () => {
+      keysArray[KEY_LEFT_ARROW] = true;
+    });
+    LEFT_BUTTON.addEventListener("touchend", () => {
+      keysArray[KEY_LEFT_ARROW] = false;
+    });
+    RIGHT_BUTTON.addEventListener("touchstart", () => {
+      keysArray[KEY_RIGHT_ARROW] = true;
+    });
+    RIGHT_BUTTON.addEventListener("touchend", () => {
+      keysArray[KEY_RIGHT_ARROW] = false;
+    });
+    FIRE_BUTTON.addEventListener("touchstart", () => {
+      if (hunter.visible) {
+        if (_soundfxOn == ON) {
+          FIRE_SOUND.play();
+        }
+        bulletsArray.push(new Bullet(hunter.angle));
+      }
+    });
+    ACCELERATE_BUTTON.addEventListener("touchstart", () => {
+      keysArray[KEY_UP_ARROW] = true;
+    });
+    ACCELERATE_BUTTON.addEventListener("touchend", () => {
+      keysArray[KEY_UP_ARROW] = false;
+    });
+  }
 
   /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
 
@@ -335,12 +384,12 @@ function canvasApp() {
         dist: 0,
         explodeTime: 0,
       });
-      /* sfxBullet.play(); */
+      sfxBullet.play();
     }
     // prevent further shooting
     hunter.canShoot = false;
   }
-  /*
+
   // the speed of the beat increases as the game progresses
   function Music(srcLow, srcHigh) {
     this.soundLow = new Audio(srcLow);
@@ -348,7 +397,7 @@ function canvasApp() {
     this.low = true; // keep track of what audio were playing
     this.tempo = 1.0; // seconds per beat (keep track of speed of audio)
     this.beatTime = 0; // frames left until next beat (countdown the tempo)
-  
+
     this.play = function () {
       if (MUSIC_ON) {
         // if MUSIC_ON = true then do all of this
@@ -363,12 +412,12 @@ function canvasApp() {
         this.low = !this.low; // switch between the two sounds (switches true to false and false to true)
       }
     };
-  
+
     // this completes the tempo changing
     this.setTargetRatio = function (ratio) {
       this.tempo = 1.0 - 0.75 * (1.0 - ratio); // when ratio is 0, 1-0=1, .75*1=.75, 1-.75=.25 ::: the fastest rate will be .25 which is 4 beats per second
     };
-  /*
+
     // countdown the tempo beat
     this.tick = function () {
       // called every frame
@@ -381,9 +430,9 @@ function canvasApp() {
         this.beatTime--; // decrement it
       }
     };
-  } */
+  }
 
-  /* function Sound(src, maxStreams = 1, vol = 1.0) {
+  function Sound(src, maxStreams = 1, vol = 1.0) {
     this.streamNum = 0; // keep track of which stream is currently being played
     this.streams = []; // empty array keeps track of each stream
     for (var i = 0; i < maxStreams; i++) {
@@ -391,26 +440,26 @@ function canvasApp() {
       this.streams.push(new Audio(src)); // push to that array, src = argument
       this.streams[i].volume = vol; // set the volume level
     }
-  
+
     this.play = function () {
       if (SOUND_ON) {
         this.streamNum = (this.streamNum + 1) % maxStreams; // cycle threw each of the streams and find the modulus of the maxStreams
         this.streams[this.streamNum].play(); // the element number .play is the in-built play function
       }
     };
-  
+
     this.stop = function () {
       this.streams[this.streamNum].pause();
       this.streams[this.streamNum].currentTime = 0;
     };
-  } */
+  }
 
   function update() {
     var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
     var exploding = hunter.explodeTime > 0; //  > 0 means the hunter is exploding
 
     // tick the music
-    /*music.tick(); */
+    music.tick();
 
     ctx.fillStyle = "black"; // canvas background color
 
@@ -421,7 +470,7 @@ function canvasApp() {
       // added && !hunter.dead, which combined with keyUp and keyDown ends the game
       hunter.accelerate.x += (HUNTER_ACCELERATE * Math.cos(hunter.a)) / FPS;
       hunter.accelerate.y -= (HUNTER_ACCELERATE * Math.sin(hunter.a)) / FPS;
-      /* sfxAccelerate.play(); // this sound will continue when forward key is released, need a way to stop the sound */
+      sfxAccelerate.play(); // this sound will continue when forward key is released, need a way to stop the sound
 
       // draw the accelerater
       if (!exploding && blinkOn) {
@@ -454,7 +503,7 @@ function canvasApp() {
       sfxAccelerate.stop(); // stops the accelerate sound when the forward key is released.
     }
 
-    //draw a triangular hunter
+    //draw a traingular hunter
     if (!exploding) {
       // if hunter is not exploding
       if (blinkOn && !hunter.dead) {
@@ -477,9 +526,6 @@ function canvasApp() {
         );
         ctx.closePath();
         ctx.stroke();
-
-        /*canv.addEventListener("mousemove", onMouseMove, false);
-        canv.addEventListener("touchmove", onTouchMove, false); */
       }
 
       // handle blinking
@@ -691,7 +737,6 @@ function canvasApp() {
         }
       }
     }
-
     //check for target collisions
     if (!exploding) {
       if (hunter.blinkNum == 0 && !hunter.dead) {
@@ -769,17 +814,16 @@ function canvasApp() {
           continue; // continue, stops the code from continuing on instead it goes back to the for loop above
         }
       } else {
-
-        // move the bullets
-        hunter.bullets[moveBullets].x += hunter.bullets[moveBullets].xv;
-        hunter.bullets[moveBullets].y += hunter.bullets[moveBullets].yv;
-
-        // calculate the bullets distance travelled
-        hunter.bullets[moveBullets].dist += Math.sqrt(
-          Math.pow(hunter.bullets[moveBullets].xv, 2) +
-          Math.pow(hunter.bullets[moveBullets].yv, 2)
-        );
       }
+      // move the bullets
+      hunter.bullets[moveBullets].x += hunter.bullets[moveBullets].xv;
+      hunter.bullets[moveBullets].y += hunter.bullets[moveBullets].yv;
+
+      // calculate the bullets distance travelled
+      hunter.bullets[moveBullets].dist += Math.sqrt(
+        Math.pow(hunter.bullets[moveBullets].xv, 2) +
+        Math.pow(hunter.bullets[moveBullets].yv, 2)
+      );
 
       // handle edge of the screen
       if (hunter.bullets[moveBullets].x < 0) {
