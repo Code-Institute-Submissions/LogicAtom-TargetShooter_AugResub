@@ -54,6 +54,7 @@ function canvasApp() {
     ctx = canv.getContext('2d');
   }
 
+
   function supportedAudioFormat(audio) {
     var returnExtension = "";
     if (audio.canPlayType("audio/ogg") == "probably" || audio.canPlayType("audio/ogg") == "maybe") {
@@ -465,417 +466,762 @@ function canvasApp() {
     };
   }
 
-  function update() {
-    var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
-    var exploding = hunter.explodeTime > 0; //  > 0 means the hunter is exploding
+  function update()
+  var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
+  var exploding = hunter.explodeTime > 0; //  > 0 means the hunter is exploding
 
-    // tick the music
-    music.tick();
+  // tick the music
+  music.tick();
 
-    ctx.fillStyle = "black"; // canvas background color
+  ctx.fillStyle = "black"; // canvas background color
 
-    ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
+  ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
 
-    // accelerate the hunter
-    if (hunter.accelerateing && !hunter.dead) {
-      // added && !hunter.dead, which combined with keyUp and keyDown ends the game
-      hunter.accelerate.x += (HUNTER_ACCELERATE * Math.cos(hunter.a)) / FPS;
-      hunter.accelerate.y -= (HUNTER_ACCELERATE * Math.sin(hunter.a)) / FPS;
-      sfxAccelerate.play(); // this sound will continue when forward key is released, need a way to stop the sound
+  // accelerate the hunter
+  if (hunter.accelerateing && !hunter.dead) {
+    // added && !hunter.dead, which combined with keyUp and keyDown ends the game
+    hunter.accelerate.x += (HUNTER_ACCELERATE * Math.cos(hunter.a)) / FPS;
+    hunter.accelerate.y -= (HUNTER_ACCELERATE * Math.sin(hunter.a)) / FPS;
+    sfxAccelerate.play(); // this sound will continue when forward key is released, need a way to stop the sound
 
-      // draw the accelerater
-      if (!exploding && blinkOn) {
-        ctx.fillStyle = "gold";
-        ctx.strokeStyle = "blue";
-        ctx.lineWidth = HUNTER_SIZE / 10;
-        ctx.beginPath();
-        ctx.moveTo(
-          // rear left
-          hunter.x - hunter.r * ((2 / 3) * Math.cos(hunter.a) + Math.sin(hunter.a)),
-          hunter.y + hunter.r * ((2 / 3) * Math.sin(hunter.a) - Math.cos(hunter.a))
-        );
-        ctx.lineTo(
-          // rear center behind the hunter
-          hunter.x - ((hunter.r * 5) / 2) * Math.cos(hunter.a),
-          hunter.y + ((hunter.r * 11) / 3) * Math.sin(hunter.a)
-        );
-        ctx.lineTo(
-          // rear right
-          hunter.x - hunter.r * ((2 / 3) * Math.cos(hunter.a) - Math.sin(hunter.a)),
-          hunter.y + hunter.r * ((2 / 3) * Math.sin(hunter.a) + Math.cos(hunter.a))
-        );
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-      }
-    } else {
-      hunter.accelerate.x -= (FRICTION * hunter.accelerate.x) / FPS;
-      hunter.accelerate.y -= (FRICTION * hunter.accelerate.y) / FPS;
-      sfxAccelerate.stop(); // stops the accelerate sound when the forward key is released.
+    // draw the accelerater
+    if (!exploding && blinkOn) {
+      ctx.fillStyle = "gold";
+      ctx.strokeStyle = "blue";
+      ctx.lineWidth = HUNTER_SIZE / 10;
+      ctx.beginPath();
+      ctx.moveTo(
+        // rear left
+        hunter.x - hunter.r * ((2 / 3) * Math.cos(hunter.a) + Math.sin(hunter.a)),
+        hunter.y + hunter.r * ((2 / 3) * Math.sin(hunter.a) - Math.cos(hunter.a))
+      );
+      ctx.lineTo(
+        // rear center behind the hunter
+        hunter.x - ((hunter.r * 5) / 2) * Math.cos(hunter.a),
+        hunter.y + ((hunter.r * 11) / 3) * Math.sin(hunter.a)
+      );
+      ctx.lineTo(
+        // rear right
+        hunter.x - hunter.r * ((2 / 3) * Math.cos(hunter.a) - Math.sin(hunter.a)),
+        hunter.y + hunter.r * ((2 / 3) * Math.sin(hunter.a) + Math.cos(hunter.a))
+      );
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+  } else {
+    hunter.accelerate.x -= (FRICTION * hunter.accelerate.x) / FPS;
+    hunter.accelerate.y -= (FRICTION * hunter.accelerate.y) / FPS;
+    sfxAccelerate.stop(); // stops the accelerate sound when the forward key is released.
+  }
+
+  //draw a traingular hunter
+  if (!exploding) {
+    // if hunter is not exploding
+    if (blinkOn && !hunter.dead) {
+      // added && !hunter.dead combined with other lines to not draw a new hunter when game is over
+      drawHunter(hunter.x, hunter.y, hunter.a);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = HUNTER_SIZE / 20;
+      ctx.beginPath();
+      ctx.moveTo(  // nose of the hunter
+        hunter.x + 4 / 3 * hunter.r * Math.cos(hunter.a),
+        hunter.y - 4 / 3 * hunter.r * Math.sin(hunter.a)
+      );
+      ctx.lineTo( // rear left
+        hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) + Math.sin(hunter.a)),
+        hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) - Math.cos(hunter.a))
+      );
+      ctx.lineTo( // rear right
+        hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) - Math.sin(hunter.a)),
+        hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) + Math.cos(hunter.a))
+      );
+      ctx.closePath();
+      ctx.stroke();
     }
 
-    //draw a traingular hunter
-    if (!exploding) {
-      // if hunter is not exploding
-      if (blinkOn && !hunter.dead) {
-        // added && !hunter.dead combined with other lines to not draw a new hunter when game is over
-        drawHunter(hunter.x, hunter.y, hunter.a);
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = HUNTER_SIZE / 20;
-        ctx.beginPath();
-        ctx.moveTo(  // nose of the hunter
-          hunter.x + 4 / 3 * hunter.r * Math.cos(hunter.a),
-          hunter.y - 4 / 3 * hunter.r * Math.sin(hunter.a)
-        );
-        ctx.lineTo( // rear left
-          hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) + Math.sin(hunter.a)),
-          hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) - Math.cos(hunter.a))
-        );
-        ctx.lineTo( // rear right
-          hunter.x - hunter.r * (2 / 3 * Math.cos(hunter.a) - Math.sin(hunter.a)),
-          hunter.y + hunter.r * (2 / 3 * Math.sin(hunter.a) + Math.cos(hunter.a))
-        );
-        ctx.closePath();
-        ctx.stroke();
-      }
+    // handle blinking
+    if (hunter.blinkNum > 0) {
+      //reduce the blink time
+      hunter.blinkTime--;
 
-      // handle blinking
-      if (hunter.blinkNum > 0) {
-        //reduce the blink time
-        hunter.blinkTime--;
-
-        //reduce the blink num
-        if (hunter.blinkTime == 0) {
-          hunter.blinkTime = Math.ceil(HUNTER_BLINK_DUR * FPS);
-          hunter.blinkNum--;
-        }
+      //reduce the blink num
+      if (hunter.blinkTime == 0) {
+        hunter.blinkTime = Math.ceil(HUNTER_BLINK_DUR * FPS);
+        hunter.blinkNum--;
       }
+    }
+  } else {
+    // draw the explosion
+    ctx.fillStyle = "darkblue";
+    ctx.beginPath();
+    ctx.arc(hunter.x, hunter.y, hunter.r * 1.7, 0, Math.PI * 2, false);
+    ctx.fill();
+    ctx.fillStyle = "blue";
+    ctx.beginPath();
+    ctx.arc(hunter.x, hunter.y, hunter.r * 1.4, 0, Math.PI * 2, false);
+    ctx.fill();
+    ctx.fillStyle = "gray";
+    ctx.beginPath();
+    ctx.arc(hunter.x, hunter.y, hunter.r * 1.1, 0, Math.PI * 2, false);
+    ctx.fill();
+    ctx.fillStyle = "yellow";
+    ctx.beginPath();
+    ctx.arc(hunter.x, hunter.y, hunter.r * 0.8, 0, Math.PI * 2, false);
+    ctx.fill();
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(hunter.x, hunter.y, hunter.r * 0.5, 0, Math.PI * 2, false);
+    ctx.fill();
+  }
+
+  if (SHOW_BOUNDING) {
+    ctx.strokeStyle = "lime";
+    ctx.beginPath();
+    ctx.arc(hunter.x, hunter.y, hunter.r, 0, Math.PI * 2, false);
+    ctx.stroke();
+  }
+
+  // draw the targets
+  var x, y, r, a, vert, offs;
+  for (var i = 0; i < targets.length; i++) {
+    ctx.strokeStyle = "brown";
+    ctx.lineWidth = HUNTER_SIZE / 20;
+
+    // get the target properties
+    x = targets[i].x;
+    y = targets[i].y;
+    r = targets[i].r;
+    a = targets[i].a;
+    vert = targets[i].vert;
+    offs = targets[i].offs;
+
+    // draw a path
+    ctx.beginPath();
+    ctx.moveTo(x + r * offs[0] * Math.cos(a), y + r * offs[0] * Math.sin(a));
+
+    // draw the polygon
+    for (var p = 1; p < vert; p++) {
+      ctx.lineTo(
+        x + r * offs[p] * Math.cos(a + (p * Math.PI * 2) / vert),
+        y + r * offs[p] * Math.sin(a + (p * Math.PI * 2) / vert)
+      );
+    }
+    ctx.closePath();
+    ctx.stroke();
+
+    // bounding boxes
+    if (SHOW_BOUNDING) {
+      ctx.strokeStyle = "pink";
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2, false);
+      ctx.stroke();
+    }
+  }
+
+  // center dot
+  if (SHOW_CENTER_DOT) {
+    ctx.fillStyle = "brown";
+    ctx.fillRect(hunter.x - 1, hunter.y - 1, 2, 2);
+  }
+
+  // draw the bullets
+  for (
+    var bulletExplosionColor = 0;
+    bulletExplosionColor < hunter.bullets.length;
+    bulletExplosionColor++
+  ) {
+    if (hunter.bullets[bulletExplosionColor].explodeTime == 0) {
+      ctx.fillStyle = "gold";
+      ctx.beginPath();
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        HUNTER_SIZE / 15,
+        0,
+        Math.PI * 2,
+        false
+      );
+      ctx.fill();
     } else {
       // draw the explosion
-      ctx.fillStyle = "darkblue";
+      ctx.fillStyle = "silver";
       ctx.beginPath();
-      ctx.arc(hunter.x, hunter.y, hunter.r * 1.7, 0, Math.PI * 2, false);
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        hunter.r * 0.75,
+        0,
+        Math.PI * 2,
+        false
+      );
       ctx.fill();
-      ctx.fillStyle = "blue";
+      ctx.fillStyle = "black";
       ctx.beginPath();
-      ctx.arc(hunter.x, hunter.y, hunter.r * 1.4, 0, Math.PI * 2, false);
-      ctx.fill();
-      ctx.fillStyle = "gray";
-      ctx.beginPath();
-      ctx.arc(hunter.x, hunter.y, hunter.r * 1.1, 0, Math.PI * 2, false);
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        hunter.r * 0.5,
+        0,
+        Math.PI * 2,
+        false
+      );
       ctx.fill();
       ctx.fillStyle = "yellow";
       ctx.beginPath();
-      ctx.arc(hunter.x, hunter.y, hunter.r * 0.8, 0, Math.PI * 2, false);
-      ctx.fill();
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      ctx.arc(hunter.x, hunter.y, hunter.r * 0.5, 0, Math.PI * 2, false);
-      ctx.fill();
-    }
-
-    if (SHOW_BOUNDING) {
-      ctx.strokeStyle = "lime";
-      ctx.beginPath();
-      ctx.arc(hunter.x, hunter.y, hunter.r, 0, Math.PI * 2, false);
-      ctx.stroke();
-    }
-
-    // draw the targets
-    var x, y, r, a, vert, offs;
-    for (var i = 0; i < targets.length; i++) {
-      ctx.strokeStyle = "brown";
-      ctx.lineWidth = HUNTER_SIZE / 20;
-
-      // get the target properties
-      x = targets[i].x;
-      y = targets[i].y;
-      r = targets[i].r;
-      a = targets[i].a;
-      vert = targets[i].vert;
-      offs = targets[i].offs;
-
-      // draw a path
-      ctx.beginPath();
-      ctx.moveTo(x + r * offs[0] * Math.cos(a), y + r * offs[0] * Math.sin(a));
-
-      // draw the polygon
-      for (var p = 1; p < vert; p++) {
-        ctx.lineTo(
-          x + r * offs[p] * Math.cos(a + (p * Math.PI * 2) / vert),
-          y + r * offs[p] * Math.sin(a + (p * Math.PI * 2) / vert)
-        );
-      }
-      ctx.closePath();
-      ctx.stroke();
-
-      // bounding boxes
-      if (SHOW_BOUNDING) {
-        ctx.strokeStyle = "pink";
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2, false);
-        ctx.stroke();
-      }
-    }
-
-    // center dot
-    if (SHOW_CENTER_DOT) {
-      ctx.fillStyle = "brown";
-      ctx.fillRect(hunter.x - 1, hunter.y - 1, 2, 2);
-    }
-
-    // draw the bullets
-    for (
-      var bulletExplosionColor = 0;
-      bulletExplosionColor < hunter.bullets.length;
-      bulletExplosionColor++
-    ) {
-      if (hunter.bullets[bulletExplosionColor].explodeTime == 0) {
-        ctx.fillStyle = "gold";
-        ctx.beginPath();
-        ctx.arc(
-          hunter.bullets[bulletExplosionColor].x,
-          hunter.bullets[bulletExplosionColor].y,
-          HUNTER_SIZE / 15,
-          0,
-          Math.PI * 2,
-          false
-        );
-        ctx.fill();
-      } else {
-        // draw the explosion
-        ctx.fillStyle = "silver";
-        ctx.beginPath();
-        ctx.arc(
-          hunter.bullets[bulletExplosionColor].x,
-          hunter.bullets[bulletExplosionColor].y,
-          hunter.r * 0.75,
-          0,
-          Math.PI * 2,
-          false
-        );
-        ctx.fill();
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(
-          hunter.bullets[bulletExplosionColor].x,
-          hunter.bullets[bulletExplosionColor].y,
-          hunter.r * 0.5,
-          0,
-          Math.PI * 2,
-          false
-        );
-        ctx.fill();
-        ctx.fillStyle = "yellow";
-        ctx.beginPath();
-        ctx.arc(
-          hunter.bullets[bulletExplosionColor].x,
-          hunter.bullets[bulletExplosionColor].y,
-          hunter.r * 0.25,
-          0,
-          Math.PI * 2,
-          false
-        );
-        ctx.fill();
-      }
-    }
-
-    // draw the game text
-    if (textAlpha >= 0) {
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
-      ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-      ctx.fillText(text, canv.width / 2, canv.height * 0.75);
-      textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
-    } else if (hunter.dead) {
-      newGame();
-    }
-
-    // draw the lives
-    var lifeColor; // change color of remaining lives
-    for (var hunterLivesColor = 0; hunterLivesColor < lives; hunterLivesColor++) {
-      lifeColor = exploding && hunterLivesColor == lives - 1 ? "red" : "green"; // this line references var lifeColor above
-      drawHunter(
-        HUNTER_SIZE + hunterLivesColor * HUNTER_SIZE * 1.2,
-        HUNTER_SIZE,
-        0.5 * Math.PI,
-        lifeColor
+      ctx.arc(
+        hunter.bullets[bulletExplosionColor].x,
+        hunter.bullets[bulletExplosionColor].y,
+        hunter.r * 0.25,
+        0,
+        Math.PI * 2,
+        false
       );
+      ctx.fill();
     }
+  }
 
-    // draw the score
-    ctx.textAlign = "right";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "magenta";
-    ctx.font = TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-    ctx.fillText(score, canv.width - HUNTER_SIZE / 2, HUNTER_SIZE);
-
-    // draw the high score
+  // draw the game text
+  if (textAlpha >= 0) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "blue";
-    ctx.font = TEXT_SIZE * 0.75 + "px courier"; // courier font is only font that works on all platforms
-    ctx.fillText("High Score " + scoreHigh, canv.width / 2, HUNTER_SIZE);
+    ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
+    ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
+    ctx.fillText(text, canv.width / 2, canv.height * 0.75);
+    textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
+  } else if (hunter.dead) {
+    newGame();
+  }
 
-    // detect bullet hits on targets
-    var ax, ay, ar, lx, ly;
-    for (var detectHits = targets.length - 1; detectHits >= 0; detectHits--) {
-      // grab the target properties
-      ax = targets[detectHits].x;
-      ay = targets[detectHits].y;
-      ar = targets[detectHits].r;
-      // loop over the bullets
-      for (
-        var properties = hunter.bullets.length - 1;
-        properties >= 0;
-        properties--
+  // draw the lives
+  var lifeColor; // change color of remaining lives
+  for (var hunterLivesColor = 0; hunterLivesColor < lives; hunterLivesColor++) {
+    lifeColor = exploding && hunterLivesColor == lives - 1 ? "red" : "green"; // this line references var lifeColor above
+    drawHunter(
+      HUNTER_SIZE + hunterLivesColor * HUNTER_SIZE * 1.2,
+      HUNTER_SIZE,
+      0.5 * Math.PI,
+      lifeColor
+    );
+  }
+
+  // draw the score
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "magenta";
+  ctx.font = TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
+  ctx.fillText(score, canv.width - HUNTER_SIZE / 2, HUNTER_SIZE);
+
+  // draw the high score
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "blue";
+  ctx.font = TEXT_SIZE * 0.75 + "px courier"; // courier font is only font that works on all platforms
+  ctx.fillText("High Score " + scoreHigh, canv.width / 2, HUNTER_SIZE);
+
+  // detect bullet hits on targets
+  var ax, ay, ar, lx, ly;
+  for (var detectHits = targets.length - 1; detectHits >= 0; detectHits--) {
+    // grab the target properties
+    ax = targets[detectHits].x;
+    ay = targets[detectHits].y;
+    ar = targets[detectHits].r;
+    // loop over the bullets
+    for (
+      var properties = hunter.bullets.length - 1;
+      properties >= 0;
+      properties--
+    ) {
+      // grab the bullet properties
+      lx = hunter.bullets[properties].x;
+      ly = hunter.bullets[properties].y;
+      // detect hits
+      if (
+        hunter.bullets[properties].explodeTime == 0 &&
+        distBetweenPoints(ax, ay, lx, ly) < ar
       ) {
-        // grab the bullet properties
-        lx = hunter.bullets[properties].x;
-        ly = hunter.bullets[properties].y;
-        // detect hits
+        // destroy the target and activate the bullet explosion
+        destroyTarget(detectHits);
+        hunter.bullets[properties].explodeTime = Math.ceil(
+          BULLET_EXPLODE_DUR * FPS
+        );
+        break;
+      }
+    }
+  }
+
+  //check for target collisions
+  if (!exploding) {
+    if (hunter.blinkNum == 0 && !hunter.dead) {
+      for (
+        var chekCollisions = 0;
+        chekCollisions < targets.length;
+        chekCollisions++
+      ) {
         if (
-          hunter.bullets[properties].explodeTime == 0 &&
-          distBetweenPoints(ax, ay, lx, ly) < ar
+          distBetweenPoints(
+            hunter.x,
+            hunter.y,
+            targets[chekCollisions].x,
+            targets[chekCollisions].y
+          ) <
+          hunter.r + targets[chekCollisions].r
         ) {
-          // destroy the target and activate the bullet explosion
-          destroyTarget(detectHits);
-          hunter.bullets[properties].explodeTime = Math.ceil(
-            BULLET_EXPLODE_DUR * FPS
-          );
-          break;
+          explodeHunter();
+          destroyTarget(chekCollisions);
+          break; // adding break makes it so the hunter explosion doesn't take out more than one target intermittenly
         }
       }
     }
 
-    //check for target collisions
-    if (!exploding) {
-      if (hunter.blinkNum == 0 && !hunter.dead) {
-        for (
-          var chekCollisions = 0;
-          chekCollisions < targets.length;
-          chekCollisions++
-        ) {
-          if (
-            distBetweenPoints(
-              hunter.x,
-              hunter.y,
-              targets[chekCollisions].x,
-              targets[chekCollisions].y
-            ) <
-            hunter.r + targets[chekCollisions].r
-          ) {
-            explodeHunter();
-            destroyTarget(chekCollisions);
-            break; // adding break makes it so the hunter explosion doesn't take out more than one target intermittenly
-          }
-        }
+    // rotate hunter
+    hunter.a += hunter.rot;
+
+    // move the hunter
+    hunter.x += hunter.accelerate.x;
+    hunter.y += hunter.accelerate.y;
+  } else {
+    // reduce the explode time
+    hunter.explodeTime--;
+
+    // reset the hunter after the explosion has finished
+    if (hunter.explodeTime == 0) {
+      lives--; // removes 1 life after a hunter explodes
+      if (lives == 0) {
+        // no more lives left
+        gameOver(); // call function
+      } else {
+        hunter = newHunter();
       }
+    }
+  }
 
-      // rotate hunter
-      hunter.a += hunter.rot;
+  // handle edge of the screen
+  if (hunter.x < 0 - hunter.r) {
+    hunter.x = canv.width + hunter.r;
+  } else if (hunter.x > canv.width + hunter.r) {
+    hunter.x = 0 - hunter.r;
+  }
+  if (hunter.y < 0 - hunter.r) {
+    hunter.y = canv.height + hunter.r;
+  } else if (hunter.y > canv.height + hunter.r) {
+    hunter.y = 0 - hunter.r;
+  }
 
-      // move the hunter
-      hunter.x += hunter.accelerate.x;
-      hunter.y += hunter.accelerate.y;
+  // move the bullets
+  for (var moveBullets = hunter.bullets.length - 1; moveBullets >= 0; moveBullets--) {
+
+    // check the distance travelled
+    if (hunter.bullets[moveBullets].dist > BULLET_DIST * canv.width) {
+      hunter.bullets.splice(moveBullets, 1); // delete one
+      continue;
+    }
+
+    // handle the explosion
+    if (hunter.bullets[moveBullets].explodeTime > 0) {
+      hunter.bullets[moveBullets].explodeTime--;
+
+      // destroy the bullet after the duration is up
+      if (hunter.bullets[moveBullets].explodeTime == 0) {
+        hunter.bullets.splice(moveBullets, 1);
+        continue; // continue, stops the code from continuing on instead it goes back to the for loop above
+      }
     } else {
-      // reduce the explode time
-      hunter.explodeTime--;
-
-      // reset the hunter after the explosion has finished
-      if (hunter.explodeTime == 0) {
-        lives--; // removes 1 life after a hunter explodes
-        if (lives == 0) {
-          // no more lives left
-          gameOver(); // call function
-        } else {
-          hunter = newHunter();
-        }
-      }
     }
+    // move the bullets
+    hunter.bullets[moveBullets].x += hunter.bullets[moveBullets].xv;
+    hunter.bullets[moveBullets].y += hunter.bullets[moveBullets].yv;
+
+    // calculate the bullets distance travelled
+    hunter.bullets[moveBullets].dist += Math.sqrt(
+      Math.pow(hunter.bullets[moveBullets].xv, 2) +
+      Math.pow(hunter.bullets[moveBullets].yv, 2)
+    );
 
     // handle edge of the screen
-    if (hunter.x < 0 - hunter.r) {
-      hunter.x = canv.width + hunter.r;
-    } else if (hunter.x > canv.width + hunter.r) {
-      hunter.x = 0 - hunter.r;
+    if (hunter.bullets[moveBullets].x < 0) {
+      hunter.bullets[moveBullets].x = canv.width;
+    } else if (hunter.bullets[moveBullets].x > canv.width) {
+      hunter.bullets[moveBullets].x = 0;
     }
-    if (hunter.y < 0 - hunter.r) {
-      hunter.y = canv.height + hunter.r;
-    } else if (hunter.y > canv.height + hunter.r) {
-      hunter.y = 0 - hunter.r;
+    if (hunter.bullets[moveBullets].y < 0) {
+      hunter.bullets[moveBullets].y = canv.height;
+    } else if (hunter.bullets[moveBullets].y > canv.height) {
+      hunter.bullets[moveBullets].y = 0;
     }
+  }
 
-    // move the bullets
-    for (var moveBullets = hunter.bullets.length - 1; moveBullets >= 0; moveBullets--) {
+  // move the targets
+  for (
+    var handleMoveBullets = 0;
+    handleMoveBullets < targets.length;
+    handleMoveBullets++
+  ) {
+    targets[handleMoveBullets].x += targets[handleMoveBullets].xv;
+    targets[handleMoveBullets].y += targets[handleMoveBullets].yv;
 
-      // check the distance travelled
-      if (hunter.bullets[moveBullets].dist > BULLET_DIST * canv.width) {
-        hunter.bullets.splice(moveBullets, 1); // delete one
-        continue;
-      }
-
-      // handle the explosion
-      if (hunter.bullets[moveBullets].explodeTime > 0) {
-        hunter.bullets[moveBullets].explodeTime--;
-
-        // destroy the bullet after the duration is up
-        if (hunter.bullets[moveBullets].explodeTime == 0) {
-          hunter.bullets.splice(moveBullets, 1);
-          continue; // continue, stops the code from continuing on instead it goes back to the for loop above
-        }
-      } else {
-      }
-      // move the bullets
-      hunter.bullets[moveBullets].x += hunter.bullets[moveBullets].xv;
-      hunter.bullets[moveBullets].y += hunter.bullets[moveBullets].yv;
-
-      // calculate the bullets distance travelled
-      hunter.bullets[moveBullets].dist += Math.sqrt(
-        Math.pow(hunter.bullets[moveBullets].xv, 2) +
-        Math.pow(hunter.bullets[moveBullets].yv, 2)
-      );
-
-      // handle edge of the screen
-      if (hunter.bullets[moveBullets].x < 0) {
-        hunter.bullets[moveBullets].x = canv.width;
-      } else if (hunter.bullets[moveBullets].x > canv.width) {
-        hunter.bullets[moveBullets].x = 0;
-      }
-      if (hunter.bullets[moveBullets].y < 0) {
-        hunter.bullets[moveBullets].y = canv.height;
-      } else if (hunter.bullets[moveBullets].y > canv.height) {
-        hunter.bullets[moveBullets].y = 0;
-      }
-    }
-
-    // move the targets
-    for (
-      var handleMoveBullets = 0;
-      handleMoveBullets < targets.length;
-      handleMoveBullets++
+    // handle edge of screen
+    if (targets[handleMoveBullets].x < 0 - targets[handleMoveBullets].r) {
+      targets[handleMoveBullets].x = canv.width + targets[handleMoveBullets].r;
+    } else if (
+      targets[handleMoveBullets].x >
+      canv.width + targets[handleMoveBullets].r
     ) {
-      targets[handleMoveBullets].x += targets[handleMoveBullets].xv;
-      targets[handleMoveBullets].y += targets[handleMoveBullets].yv;
+      targets[handleMoveBullets].x = 0 - targets[handleMoveBullets].r;
+    }
+    if (targets[handleMoveBullets].y < 0 - targets[handleMoveBullets].r) {
+      targets[handleMoveBullets].y = canv.height + targets[handleMoveBullets].r;
+    } else if (
+      targets[handleMoveBullets].y >
+      canv.height + targets[handleMoveBullets].r
+    ) {
+      targets[handleMoveBullets].y = 0 - targets[handleMoveBullets].r;
+    }
+  }
+  
 
-      // handle edge of screen
-      if (targets[handleMoveBullets].x < 0 - targets[handleMoveBullets].r) {
-        targets[handleMoveBullets].x = canv.width + targets[handleMoveBullets].r;
-      } else if (
-        targets[handleMoveBullets].x >
-        canv.width + targets[handleMoveBullets].r
-      ) {
-        targets[handleMoveBullets].x = 0 - targets[handleMoveBullets].r;
+  //playfield
+  var xMin = 0;
+  var xMax = 480;
+  var yMin = 0;
+  var yMax = 320;
+
+  //keyPresses
+  var keyPressList = [];
+
+  //touch
+  var mouseX;
+  var mouseY;
+  var touchX;
+  var touchY;
+
+  function gameStateTitle()
+  if (titleStarted != true) {
+    //fillBackground();
+
+    context.drawImage(titleImage, 0, 0);
+    setTextStyleTitle();
+
+    setTextStyle();
+    context.fillText("Tap To Start", 200, 250);
+    canv.addEventListener("mousedown", onMouseClickTitle, false);
+
+    titleStarted = true;
+  }
+
+  function onMouseClickTitle(e) {
+    canv.removeEventListener("mousedown", onMouseClickTitle, false);
+    switchGameState(GAME_STATE_NEW_GAME);
+    titleStarted = false;
+  }
+
+  function gameStateNewGame() {
+
+    player.x = 0;
+    player.y = 0;
+
+    fillBackground();
+    renderScoreBoard();
+    switchGameState(GAME_STATE_NEW_LEVEL)
+  }
+
+  //renderPlayerShip(player.x, player.y,270,1);
+  context.globalAlpha = 1;
+  update();
+  render();
+  checkCollisions();
+  checkForExtraShip();
+  checkForEndOfLevel();
+  frameRateCounter.countFrames();
+  canv.addEventListener("mousemove", onMouseMove, false);
+  canv.addEventListener("touchmove", onTouchMove, false);
+
+  function gameStateGameOver()
+  //ConsoleLog.log("Game Over State");
+  if (gameOverStarted != true)
+    fillBackground();
+  renderScoreBoard();
+  setTextStyle();
+  context.fillText("Game Over!", 200, 70);
+  context.fillText("Tap To Play", 200, 140);
+
+  gameOverStarted = true;
+  canv.addEventListener("mousedown", onMouseClickGameover, false);
+
+  function onMouseClickGameover(e) {
+    canv.removeEventListener("mousedown", onMouseClickGameover, false);
+    switchGameState(GAME_STATE_TITLE);
+    gameOverStarted = false;
+  }
+
+  function fillBackground() {
+    // draw background and text 
+    context.fillStyle = '#000000';
+    context.fillRect(xMin, yMin, xMax, yMax);
+    context.drawImage(gameback, 0, 0);
+
+  }
+
+  function renderScoreBoard() {
+
+    context.fillStyle = "#ffffff";
+    context.fillText('Score ' + score, 10, 20);
+    renderPlayerShip(200, 16, 270, .75)
+    context.fillText('X ' + playerShips, 160, 20);
+
+    context.fillText('FPS: ' + frameRateCounter.lastFrameCount, 250, 20)
+  }
+
+  function update() {
+    updatePlayer();
+    updatePlayerMissiles();
+    updateRocks();
+    updateSaucers();
+    updateSaucerMissiles();
+    updateParticles();
+  }
+
+  function render() {
+    fillBackground();
+    renderScoreBoard();
+    renderPlayerShip(player.x, player.y, player.rotation, 1);
+    renderPlayerMissiles();
+    renderRocks();
+    renderSaucers();
+    renderSaucerMissiles();
+    renderParticles();
+  }
+
+  function updatePlayer()
+  player.missileFrameCount++;
+  if (player.missileFrameCount > player.missileFrameDelay) {
+    playSound(SOUND_SHOOT, .5);
+    firePlayerMissile();
+    player.missileFrameCount = 0;
+
+  }
+
+  if (isNaN(player.y)) {
+    player.y = .5 * yMax
+  }
+
+  if (isNaN(player.x)) {
+    player.x = .5 * xMax
+  }
+
+  var radians = Math.atan2((mouseY) - player.y, (mouseX) - player.x)
+  var degrees = (radians * (180 / Math.PI));
+  var yChange = (mouseY - player.y)
+  var xChange = (mouseX - player.x)
+  var delay = 16;
+  var yMove = (yChange / delay) * frameRateCounter.step;
+  var xMove = (xChange / delay) * frameRateCounter.step;
+
+  player.x = player.x + xMove;
+  player.y = player.y + yMove;
+
+  if (degrees < 0) {
+    player.rotation = 359 + degrees;
+  } else {
+    player.rotation = degrees;
+  }
+
+  if (player.x > xMax - player.height) {
+    player.x = xMax - player.height;
+  } else if (player.x < xMin + player.height) {
+    player.x = xMin + player.height;
+  }
+
+  if (player.y > yMax - player.width) {
+    player.y = yMax - player.width;
+  } else if (player.y < yMin + player.width)
+    player.y = yMin + player.width;
+
+  function updatePlayerMissiles()
+  var tempPlayerMissile = {};
+  var playerMissileLength = playerMissiles.length - 1;
+  //ConsoleLog.log("update playerMissileLength=" + playerMissileLength);
+  for (var playerMissileCtr = playerMissileLength; playerMissileCtr >= 0; playerMissileCtr--)
+    //ConsoleLog.log("update player missile" + playerMissileCtr)
+    tempPlayerMissile = playerMissiles[playerMissileCtr];
+  tempPlayerMissile.x += tempPlayerMissile.dx * frameRateCounter.step;
+  tempPlayerMissile.y += tempPlayerMissile.dy * frameRateCounter.step;
+  if (tempPlayerMissile.x > xMax) {
+    tempPlayerMissile.x = -tempPlayerMissile.width;
+  } else if (tempPlayerMissile.x < -tempPlayerMissile.width) {
+    tempPlayerMissile.x = xMax;
+  }
+
+  if (tempPlayerMissile.y > yMax) {
+    tempPlayerMissile.y = -tempPlayerMissile.height;
+  } else if (tempPlayerMissile.y < -tempPlayerMissile.height) {
+    tempPlayerMissile.y = yMax;
+  }
+
+  if (tempRock.x > xMax) {
+    tempRock.x = xMin - tempRock.width;
+  } else if (tempRock.x < xMin - tempRock.width) {
+    tempRock.x = xMax;
+  }
+
+  if (tempRock.y > yMax) {
+    tempRock.y = yMin - tempRock.width;
+
+  } else if (tempRock.y < yMin - tempRock.width)
+    tempRock.y = yMax;
+
+  var remove = false;
+  tempSaucer.x += tempSaucer.dx * frameRateCounter.step;
+  tempSaucer.y += tempSaucer.dy * frameRateCounter.step;
+
+  //remove saucers on left and right edges
+  if (tempSaucer.dx > 0 && tempSaucer.x > xMax) {
+    remove = true;
+  } else if (tempSaucer.dx < 0 && tempSaucer.x < xMin - tempSaucer.width) {
+    remove = true;
+  }
+
+
+  function updateParticles() {
+
+    var particleLength = particles.length - 1;
+    ConsoleLog.log("particle=" + particleLength)
+    ConsoleLog.log("particlePool=" + particlePool.length)
+    for (var particleCtr = particleLength; particleCtr >= 0; particleCtr--) {
+      var remove = false;
+      tempParticle = particles[particleCtr];
+      tempParticle.x += tempParticle.dx * frameRateCounter.step;
+      tempParticle.y += tempParticle.dy * frameRateCounter.step;
+
+      tempParticle.lifeCtr++;
+      //ConsoleLog.log("particle.lifeCtr=" + tempParticle.lifeCtr);
+
+
+      //try{
+      if (tempParticle.lifeCtr > tempParticle.life) {
+        remove = true;
+
+      } else if ((tempParticle.x > xMax) || (tempParticle.x < xMin) || (tempParticle.y > yMax) || (tempParticle.y < yMin)) {
+        remove = true;
       }
-      if (targets[handleMoveBullets].y < 0 - targets[handleMoveBullets].r) {
-        targets[handleMoveBullets].y = canv.height + targets[handleMoveBullets].r;
-      } else if (
-        targets[handleMoveBullets].y >
-        canv.height + targets[handleMoveBullets].r
-      ) {
-        targets[handleMoveBullets].y = 0 - targets[handleMoveBullets].r;
+
+      function renderPlayerShip(x, y, rotation, scale) {
+        //transformation
+        context.save(); //save current state in stack
+        context.globalAlpha = parseFloat(player.alpha);
+        var angleInRadians = rotation * Math.PI / 180;
+        var sourceX = Math.floor((player.rotation / 10) % 10) * 32;
+        ////console.log("player.rotation", player.rotation)
+        ////console.log("sourceX", sourceX);
+        ////console.log("playert.x", player.x)
+        var sourceY = Math.floor((player.rotation / 10) / 10) * 32;
+        //console.log("sourceY", sourceY);
+        if (player.thrust) {
+          context.drawImage(shipTiles2, sourceX, sourceY, 32, 32, player.x, player.y, 32, 32);
+        } else {
+          context.drawImage(shipTiles, sourceX, sourceY, 32, 32, player.x, player.y, 32, 32);
+        }
+        context.restore(); //pop old state on to screen
       }
+    }
+
+    function renderSaucers() {
+      var tempSaucer = {};
+      var saucerLength = saucers.length - 1;
+      for (var saucerCtr = saucerLength; saucerCtr >= 0; saucerCtr--) {
+        //ConsoleLog.log("saucer: " + saucerCtr);
+        tempSaucer = saucers[saucerCtr];
+
+        context.save(); //save current state in stack
+        var sourceX = 0;
+        var sourceY = 0;
+
+        context.drawImage(saucerTiles, sourceX, sourceY, 30, 15, tempSaucer.x, tempSaucer.y, 30, 25);
+        context.restore(); //pop old state on to screen
+      }
+    }
+    context.restore(); //pop old state on to screen
+
+    function addToScore(value) {
+      score += value;
+    }
+
+    document.onkeydown = function (e) {
+
+      e = e ? e : window.event;
+      //ConsoleLog.log(e.keyCode + "down");
+      keyPressList[e.keyCode] = true;
+    }
+
+    document.onkeyup = function (e) {
+      //document.body.onkeyup=function(e){
+      e = e ? e : window.event;
+      //ConsoleLog.log(e.keyCode + "up");
+      keyPressList[e.keyCode] = false;
+    };
+
+
+    function onMouseMove(e) {
+      var xFactor = canv.width / window.innerWidth;
+      var yFactor = canv.height / window.innerHeight;
+
+      var mouseX1 = event.clientX - canv.offsetLeft;
+      var mouseY1 = event.clientY - canv.offsetTop;
+      mouseX = mouseX1 * xFactor;
+      mouseY = mouseY1 * yFactor;
+
+      allMoveHandler(mouseX, mouseY);
+    }
+
+    function onTouchMove(e) {
+      if (e.touches.item(0)) {
+        targetEvent = e.touches.item(0);
+      } else {
+        targetEvent = e;
+      }
+
+      touchX1 = targetEvent.clientX - canv.offsetLeft;
+      touchY1 = targetEvent.clientY - canv.offsetTop;
+      xFactor = canv.width / window.innerWidth;
+      yFactor = canv.height / window.innerHeight;
+      touchX = touchX1 * xFactor;
+      touchY = touchY1 * yFactor;
+
+      allMoveHandler(touchX, touchY);
+
+      e.preventDefault();
+
+    }
+
+
+    function allMoveHandler(x, y) {
+      mouseX = x;
+      mouseY = y;
+    }
+
+
+    function onMouseClick(e) {
+      var mouseX;
+      var mouseY;
+
+      var xFactor = canv.width / window.innerWidth;
+      var yFactor = canv.height / window.innerHeight;
+
+      var mouseX1 = event.clientX - canv.offsetLeft;
+      var mouseY1 = event.clientY - canv.offsetTop;
+      mouseX = mouseX1 * xFactor;
+      mouseY = mouseY1 * yFactor;
+
+      allClickHandler(mouseX, mouseY);
+    }
+
+
+    function allClickHandler(mouseX, mouseY) {
+
+      //alert("click");
+      console.log("all click handler");
+      console.log("mouseX=" + mouseX);
+      console.log("mouseY=" + mouseY);
     }
   }
 }
