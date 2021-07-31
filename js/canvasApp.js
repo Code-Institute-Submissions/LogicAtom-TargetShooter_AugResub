@@ -34,11 +34,18 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
+var mouseX;
+var mouseY;
+var touchX;
+var touchY;
+
 window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
 
   canvasApp();
 
+  canv.addEventListener("mousemove", onmousemove, false);
+  canv.addEventListener("touchmove", ontouchmove, false);
 }
 
 function canvasSupport() {
@@ -54,8 +61,47 @@ function canvasApp() {
   } else {
     canv = document.getElementById('canvas');
     ctx = canv.getContext('2d');
+
   }
 
+
+  function allMoveHandler(x, y) {
+    mouseX = x;
+    mouseY = y;
+  }
+
+
+  function onmousemove(e) {
+    var xFactor = canv.width / window.innerWidth;
+    var yFactor = canv.height / window.innerHeight;
+
+    var mouseX1 = event.clientX - canv.offsetLeft;
+    var mouseY1 = event.clientY - canv.offsetTop;
+    mouseX = mouseX1 * xFactor;
+    mouseY = mouseY1 * yFactor;
+
+    allMoveHandler(mouseX, mouseY);
+  }
+
+  function onTouchMove(e) {
+    if (e.touches.item(0)) {
+      targetEvent = e.touches.item(0);
+    } else {
+      targetEvent = e;
+    }
+
+    touchX1 = targetEvent.clientX - canv.offsetLeft;
+    touchY1 = targetEvent.clientY - canv.offsetTop;
+    xFactor = canv.width / window.innerWidth;
+    yFactor = canv.height / window.innerHeight;
+    touchX = touchX1 * xFactor;
+    touchY = touchY1 * yFactor;
+
+    allMoveHandler(touchX, touchY);
+
+    e.preventDefault();
+
+  }
 
 
   function disableScrolling() {
@@ -526,12 +572,6 @@ function canvasApp() {
         );
         ctx.closePath();
         ctx.stroke();
-
-        var mouseX;
-        var mouseY;
-        var touchX;
-        var touchY;
-        
       }
 
       // handle blinking
