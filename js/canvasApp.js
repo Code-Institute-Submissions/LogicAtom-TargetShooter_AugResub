@@ -242,7 +242,7 @@ function canvasApp() {
         break;
     }
   }
-
+/*
   function setupGamePadController() {
 
     document.addEventListener('touchmove', (event) => {
@@ -275,7 +275,7 @@ function canvasApp() {
     ACCELERATE_BUTTON.addEventListener("touchend", () => {
       keysArray[KEY_UP_ARROW] = false;
     });
-  }
+  } */
 
   /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
 
