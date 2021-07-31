@@ -25,7 +25,7 @@ const HUNTER_BLINK_DUR = 0.1; // duration in seconds of a single blink during hu
 const HUNTER_EXPLODE_DUR = 0.4; // duration of the hunter's explosion in seconds. 0.3 = default
 const FRICTION = 0.5; // friction coefficient (0 = no friction, 1 = lots of friction, 0.7 = default)
 
-const SOUND_ON = true; // rotates game sounds on and off, false = off, true = on. on = default
+const SOUND_ON = false; // rotates game sounds on and off, false = off, true = on. on = default
 const MUSIC_ON = false; // rotates game music background on and off, true = on, false = off. on = default
 const ROTATE_SPEED = 360; // rotate speed in degrees per second. 360 = default
 const SHOW_CENTER_DOT = false; // show or hide hunter's center dot of gravity. false = default. true is for debugging.
@@ -54,19 +54,20 @@ function canvasApp() {
     ctx = canv.getContext('2d');
   }
 
-
-  function supportedAudioFormat(audio) {
-    var returnExtension = "";
-    if (audio.canPlayType("audio/ogg") == "probably" || audio.canPlayType("audio/ogg") == "maybe") {
-      returnExtension = "ogg";
-    } else if (audio.canPlayType("audio/wav") == "probably" || audio.canPlayType("audio/wav") == "maybe") {
-      returnExtension = "wav";
-    } else if (audio.canPlayType("audio/wav") == "probably" || audio.canPlayType("audio/wav") == "maybe") {
-      returnExtension = "mp3";
+  /*
+    function supportedAudioFormat(audio) {
+      var returnExtension = "";
+      if (audio.canPlayType("audio/ogg") == "probably" || audio.canPlayType("audio/ogg") == "maybe") {
+        returnExtension = "ogg";
+      } else if (audio.canPlayType("audio/wav") == "probably" || audio.canPlayType("audio/wav") == "maybe") {
+        returnExtension = "wav";
+      } else if (audio.canPlayType("audio/wav") == "probably" || audio.canPlayType("audio/wav") == "maybe") {
+        returnExtension = "mp3";
+      }
+  
+      return returnExtension;
     }
-
-    return returnExtension;
-  }
+  */
 
   function disableScrolling() {
     var x = window.scrollX;
@@ -74,7 +75,7 @@ function canvasApp() {
     window.onscroll = function () { window.scrollTo(x, y); };
   }
 
-  /** @type {HTMLCanvasElement} */
+
 
   // set up game parameters
   var level, lives, targets, score, scoreHigh, hunter, text, textAlpha;
@@ -201,17 +202,6 @@ function canvasApp() {
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
 
-  // This sets up all the event listeners for our <canvas> element so we can handle the touch events as they occur.
-  // When the page loads, the startup() function shown below will be called.
-  function startup() {
-    var el = document.getElementById("Canvas");
-    el.addEventListener("touchstart", handleStart, false);
-    el.addEventListener("touchend", handleEnd, false);
-    el.addEventListener("touchcancel", handleCancel, false);
-    el.addEventListener("touchmove", handleMove, false);
-  }
-
-  
   // event listeners
   function keyDown(/** @type [KeyboardEvent] */ ev) {
     if (hunter.dead) {
@@ -502,8 +492,8 @@ function canvasApp() {
       ctx.closePath();
       ctx.stroke();
 
-      canv.addEventListener("mousemove", onMouseMove, false);
-      canv.addEventListener("touchmove", onTouchMove, false);
+      /*canv.addEventListener("mousemove", onMouseMove, false);
+      canv.addEventListener("touchmove", onTouchMove, false); */
     }
 
     // handle blinking
@@ -803,391 +793,46 @@ function canvasApp() {
       Math.pow(hunter.bullets[moveBullets].xv, 2) +
       Math.pow(hunter.bullets[moveBullets].yv, 2)
     );
-
-    // handle edge of the screen
-    if (hunter.bullets[moveBullets].x < 0) {
-      hunter.bullets[moveBullets].x = canv.width;
-    } else if (hunter.bullets[moveBullets].x > canv.width) {
-      hunter.bullets[moveBullets].x = 0;
-    }
-    if (hunter.bullets[moveBullets].y < 0) {
-      hunter.bullets[moveBullets].y = canv.height;
-    } else if (hunter.bullets[moveBullets].y > canv.height) {
-      hunter.bullets[moveBullets].y = 0;
-    }
   }
 
-  // move the targets
-  for (
-    var handleMoveBullets = 0;
-    handleMoveBullets < targets.length;
-    handleMoveBullets++
+  // handle edge of the screen
+  if (hunter.bullets[moveBullets].x < 0) {
+    hunter.bullets[moveBullets].x = canv.width;
+  } else if (hunter.bullets[moveBullets].x > canv.width) {
+    hunter.bullets[moveBullets].x = 0;
+  }
+  if (hunter.bullets[moveBullets].y < 0) {
+    hunter.bullets[moveBullets].y = canv.height;
+  } else if (hunter.bullets[moveBullets].y > canv.height) {
+    hunter.bullets[moveBullets].y = 0;
+  }
+}
+
+// move the targets
+for (
+  var handleMoveBullets = 0;
+  handleMoveBullets < targets.length;
+  handleMoveBullets++
+) {
+  targets[handleMoveBullets].x += targets[handleMoveBullets].xv;
+  targets[handleMoveBullets].y += targets[handleMoveBullets].yv;
+
+  // handle edge of screen
+  if (targets[handleMoveBullets].x < 0 - targets[handleMoveBullets].r) {
+    targets[handleMoveBullets].x = canv.width + targets[handleMoveBullets].r;
+  } else if (
+    targets[handleMoveBullets].x >
+    canv.width + targets[handleMoveBullets].r
   ) {
-    targets[handleMoveBullets].x += targets[handleMoveBullets].xv;
-    targets[handleMoveBullets].y += targets[handleMoveBullets].yv;
-
-    // handle edge of screen
-    if (targets[handleMoveBullets].x < 0 - targets[handleMoveBullets].r) {
-      targets[handleMoveBullets].x = canv.width + targets[handleMoveBullets].r;
-    } else if (
-      targets[handleMoveBullets].x >
-      canv.width + targets[handleMoveBullets].r
-    ) {
-      targets[handleMoveBullets].x = 0 - targets[handleMoveBullets].r;
-    }
-    if (targets[handleMoveBullets].y < 0 - targets[handleMoveBullets].r) {
-      targets[handleMoveBullets].y = canv.height + targets[handleMoveBullets].r;
-    } else if (
-      targets[handleMoveBullets].y >
-      canv.height + targets[handleMoveBullets].r
-    ) {
-      targets[handleMoveBullets].y = 0 - targets[handleMoveBullets].r;
-    }
+    targets[handleMoveBullets].x = 0 - targets[handleMoveBullets].r;
   }
-  
-/*
-  //playfield
-  var xMin = 0;
-  var xMax = 480;
-  var yMin = 0;
-  var yMax = 320;
-
-  //keyPresses
-  var keyPressList = [];
-
-  //touch
-  var mouseX;
-  var mouseY;
-  var touchX;
-  var touchY;
-
-  function gameStateTitle()
-  if (titleStarted != true) {
-    //fillBackground();
-
-    context.drawImage(titleImage, 0, 0);
-    setTextStyleTitle();
-
-    setTextStyle();
-    context.fillText("Tap To Start", 200, 250);
-    canv.addEventListener("mousedown", onMouseClickTitle, false);
-
-    titleStarted = true;
+  if (targets[handleMoveBullets].y < 0 - targets[handleMoveBullets].r) {
+    targets[handleMoveBullets].y = canv.height + targets[handleMoveBullets].r;
+  } else if (
+    targets[handleMoveBullets].y >
+    canv.height + targets[handleMoveBullets].r
+  ) {
+    targets[handleMoveBullets].y = 0 - targets[handleMoveBullets].r;
   }
+}
 
-  function onMouseClickTitle(e) {
-    canv.removeEventListener("mousedown", onMouseClickTitle, false);
-    switchGameState(GAME_STATE_NEW_GAME);
-    titleStarted = false;
-  }
-
-  function gameStateNewGame() {
-
-    player.x = 0;
-    player.y = 0;
-
-    fillBackground();
-    renderScoreBoard();
-    switchGameState(GAME_STATE_NEW_LEVEL)
-  }
-
-  //renderPlayerShip(player.x, player.y,270,1);
-  context.globalAlpha = 1;
-  update();
-  render();
-  checkCollisions();
-  checkForExtraShip();
-  checkForEndOfLevel();
-  frameRateCounter.countFrames();
-  canv.addEventListener("mousemove", onMouseMove, false);
-  canv.addEventListener("touchmove", onTouchMove, false);
-
-  function gameStateGameOver()
-  //ConsoleLog.log("Game Over State");
-  if (gameOverStarted != true)
-    fillBackground();
-  renderScoreBoard();
-  setTextStyle();
-  context.fillText("Game Over!", 200, 70);
-  context.fillText("Tap To Play", 200, 140);
-
-  gameOverStarted = true;
-  canv.addEventListener("mousedown", onMouseClickGameover, false);
-
-  function onMouseClickGameover(e) {
-    canv.removeEventListener("mousedown", onMouseClickGameover, false);
-    switchGameState(GAME_STATE_TITLE);
-    gameOverStarted = false;
-  }
-
-  function fillBackground() {
-    // draw background and text 
-    context.fillStyle = '#000000';
-    context.fillRect(xMin, yMin, xMax, yMax);
-    context.drawImage(gameback, 0, 0);
-
-  }
-
-  function renderScoreBoard() {
-
-    context.fillStyle = "#ffffff";
-    context.fillText('Score ' + score, 10, 20);
-    renderPlayerShip(200, 16, 270, .75)
-    context.fillText('X ' + playerShips, 160, 20);
-
-    context.fillText('FPS: ' + frameRateCounter.lastFrameCount, 250, 20)
-  }
-
-  function update() {
-    updatePlayer();
-    updatePlayerMissiles();
-    updateRocks();
-    updateSaucers();
-    updateSaucerMissiles();
-    updateParticles();
-  }
-
-  function render() {
-    fillBackground();
-    renderScoreBoard();
-    renderPlayerShip(player.x, player.y, player.rotation, 1);
-    renderPlayerMissiles();
-    renderRocks();
-    renderSaucers();
-    renderSaucerMissiles();
-    renderParticles();
-  }
-
-  function updatePlayer()
-  player.missileFrameCount++;
-  if (player.missileFrameCount > player.missileFrameDelay) {
-    playSound(SOUND_SHOOT, .5);
-    firePlayerMissile();
-    player.missileFrameCount = 0;
-
-  }
-
-  if (isNaN(player.y)) {
-    player.y = .5 * yMax
-  }
-
-  if (isNaN(player.x)) {
-    player.x = .5 * xMax
-  }
-
-  var radians = Math.atan2((mouseY) - player.y, (mouseX) - player.x)
-  var degrees = (radians * (180 / Math.PI));
-  var yChange = (mouseY - player.y)
-  var xChange = (mouseX - player.x)
-  var delay = 16;
-  var yMove = (yChange / delay) * frameRateCounter.step;
-  var xMove = (xChange / delay) * frameRateCounter.step;
-
-  player.x = player.x + xMove;
-  player.y = player.y + yMove;
-
-  if (degrees < 0) {
-    player.rotation = 359 + degrees;
-  } else {
-    player.rotation = degrees;
-  }
-
-  if (player.x > xMax - player.height) {
-    player.x = xMax - player.height;
-  } else if (player.x < xMin + player.height) {
-    player.x = xMin + player.height;
-  }
-
-  if (player.y > yMax - player.width) {
-    player.y = yMax - player.width;
-  } else if (player.y < yMin + player.width)
-    player.y = yMin + player.width;
-
-  function updatePlayerMissiles()
-  var tempPlayerMissile = {};
-  var playerMissileLength = playerMissiles.length - 1;
-  //ConsoleLog.log("update playerMissileLength=" + playerMissileLength);
-  for (var playerMissileCtr = playerMissileLength; playerMissileCtr >= 0; playerMissileCtr--)
-    //ConsoleLog.log("update player missile" + playerMissileCtr)
-    tempPlayerMissile = playerMissiles[playerMissileCtr];
-  tempPlayerMissile.x += tempPlayerMissile.dx * frameRateCounter.step;
-  tempPlayerMissile.y += tempPlayerMissile.dy * frameRateCounter.step;
-  if (tempPlayerMissile.x > xMax) {
-    tempPlayerMissile.x = -tempPlayerMissile.width;
-  } else if (tempPlayerMissile.x < -tempPlayerMissile.width) {
-    tempPlayerMissile.x = xMax;
-  }
-
-  if (tempPlayerMissile.y > yMax) {
-    tempPlayerMissile.y = -tempPlayerMissile.height;
-  } else if (tempPlayerMissile.y < -tempPlayerMissile.height) {
-    tempPlayerMissile.y = yMax;
-  }
-
-  if (tempRock.x > xMax) {
-    tempRock.x = xMin - tempRock.width;
-  } else if (tempRock.x < xMin - tempRock.width) {
-    tempRock.x = xMax;
-  }
-
-  if (tempRock.y > yMax) {
-    tempRock.y = yMin - tempRock.width;
-
-  } else if (tempRock.y < yMin - tempRock.width)
-    tempRock.y = yMax;
-
-  var remove = false;
-  tempSaucer.x += tempSaucer.dx * frameRateCounter.step;
-  tempSaucer.y += tempSaucer.dy * frameRateCounter.step;
-
-  //remove saucers on left and right edges
-  if (tempSaucer.dx > 0 && tempSaucer.x > xMax) {
-    remove = true;
-  } else if (tempSaucer.dx < 0 && tempSaucer.x < xMin - tempSaucer.width) {
-    remove = true;
-  }
-
-
-  function updateParticles() {
-
-    var particleLength = particles.length - 1;
-    ConsoleLog.log("particle=" + particleLength)
-    ConsoleLog.log("particlePool=" + particlePool.length)
-    for (var particleCtr = particleLength; particleCtr >= 0; particleCtr--) {
-      var remove = false;
-      tempParticle = particles[particleCtr];
-      tempParticle.x += tempParticle.dx * frameRateCounter.step;
-      tempParticle.y += tempParticle.dy * frameRateCounter.step;
-
-      tempParticle.lifeCtr++;
-      //ConsoleLog.log("particle.lifeCtr=" + tempParticle.lifeCtr);
-
-
-      //try{
-      if (tempParticle.lifeCtr > tempParticle.life) {
-        remove = true;
-
-      } else if ((tempParticle.x > xMax) || (tempParticle.x < xMin) || (tempParticle.y > yMax) || (tempParticle.y < yMin)) {
-        remove = true;
-      }
-
-      function renderPlayerShip(x, y, rotation, scale) {
-        //transformation
-        context.save(); //save current state in stack
-        context.globalAlpha = parseFloat(player.alpha);
-        var angleInRadians = rotation * Math.PI / 180;
-        var sourceX = Math.floor((player.rotation / 10) % 10) * 32;
-        ////console.log("player.rotation", player.rotation)
-        ////console.log("sourceX", sourceX);
-        ////console.log("playert.x", player.x)
-        var sourceY = Math.floor((player.rotation / 10) / 10) * 32;
-        //console.log("sourceY", sourceY);
-        if (player.thrust) {
-          context.drawImage(shipTiles2, sourceX, sourceY, 32, 32, player.x, player.y, 32, 32);
-        } else {
-          context.drawImage(shipTiles, sourceX, sourceY, 32, 32, player.x, player.y, 32, 32);
-        }
-        context.restore(); //pop old state on to screen
-      }
-    }
-
-    function renderSaucers() {
-      var tempSaucer = {};
-      var saucerLength = saucers.length - 1;
-      for (var saucerCtr = saucerLength; saucerCtr >= 0; saucerCtr--) {
-        //ConsoleLog.log("saucer: " + saucerCtr);
-        tempSaucer = saucers[saucerCtr];
-
-        context.save(); //save current state in stack
-        var sourceX = 0;
-        var sourceY = 0;
-
-        context.drawImage(saucerTiles, sourceX, sourceY, 30, 15, tempSaucer.x, tempSaucer.y, 30, 25);
-        context.restore(); //pop old state on to screen
-      }
-    }
-    context.restore(); //pop old state on to screen
-
-    function addToScore(value) {
-      score += value;
-    }
-
-    document.onkeydown = function (e) {
-
-      e = e ? e : window.event;
-      //ConsoleLog.log(e.keyCode + "down");
-      keyPressList[e.keyCode] = true;
-    }
-
-    document.onkeyup = function (e) {
-      //document.body.onkeyup=function(e){
-      e = e ? e : window.event;
-      //ConsoleLog.log(e.keyCode + "up");
-      keyPressList[e.keyCode] = false;
-    };
-
-
-    function onMouseMove(e) {
-      var xFactor = canv.width / window.innerWidth;
-      var yFactor = canv.height / window.innerHeight;
-
-      var mouseX1 = event.clientX - canv.offsetLeft;
-      var mouseY1 = event.clientY - canv.offsetTop;
-      mouseX = mouseX1 * xFactor;
-      mouseY = mouseY1 * yFactor;
-
-      allMoveHandler(mouseX, mouseY);
-    }
-
-    function onTouchMove(e) {
-      if (e.touches.item(0)) {
-        targetEvent = e.touches.item(0);
-      } else {
-        targetEvent = e;
-      }
-
-      touchX1 = targetEvent.clientX - canv.offsetLeft;
-      touchY1 = targetEvent.clientY - canv.offsetTop;
-      xFactor = canv.width / window.innerWidth;
-      yFactor = canv.height / window.innerHeight;
-      touchX = touchX1 * xFactor;
-      touchY = touchY1 * yFactor;
-
-      allMoveHandler(touchX, touchY);
-
-      e.preventDefault();
-
-    }
-
-
-    function allMoveHandler(x, y) {
-      mouseX = x;
-      mouseY = y;
-    }
-
-
-    function onMouseClick(e) {
-      var mouseX;
-      var mouseY;
-
-      var xFactor = canv.width / window.innerWidth;
-      var yFactor = canv.height / window.innerHeight;
-
-      var mouseX1 = event.clientX - canv.offsetLeft;
-      var mouseY1 = event.clientY - canv.offsetTop;
-      mouseX = mouseX1 * xFactor;
-      mouseY = mouseY1 * yFactor;
-
-      allClickHandler(mouseX, mouseY);
-    }
-
-
-    function allClickHandler(mouseX, mouseY) {
-
-      //alert("click");
-      console.log("all click handler");
-      console.log("mouseX=" + mouseX);
-      console.log("mouseY=" + mouseY);
-    }
-  }
-} */
