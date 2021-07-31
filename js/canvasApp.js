@@ -526,6 +526,12 @@ function canvasApp() {
         );
         ctx.closePath();
         ctx.stroke();
+
+        var mouseX;
+        var mouseY;
+        var touchX;
+        var touchY;
+        
       }
 
       // handle blinking
@@ -668,45 +674,6 @@ function canvasApp() {
         ctx.fill();
       }
     }
-    /*
-        // draw the game text
-        if (textAlpha >= 0) {
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
-          ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-          ctx.fillText(text, canv.width / 2, canv.height * 0.75);
-          textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
-        } else if (hunter.dead) {
-          newGame();
-        }
-    
-        // draw the lives
-        var lifeColor; // change color of remaining lives
-        for (var hunterLivesColor = 0; hunterLivesColor < lives; hunterLivesColor++) {
-          lifeColor = exploding && hunterLivesColor == lives - 1 ? "red" : "green"; // this line references var lifeColor above
-          drawHunter(
-            HUNTER_SIZE + hunterLivesColor * HUNTER_SIZE * 1.2,
-            HUNTER_SIZE,
-            0.5 * Math.PI,
-            lifeColor
-          );
-        }
-    
-        // draw the score
-        ctx.textAlign = "right";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "magenta";
-        ctx.font = TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-        ctx.fillText(score, canv.width - HUNTER_SIZE / 2, HUNTER_SIZE);
-    
-        // draw the high score
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "blue";
-        ctx.font = TEXT_SIZE * 0.75 + "px courier"; // courier font is only font that works on all platforms
-        ctx.fillText("High Score " + scoreHigh, canv.width / 2, HUNTER_SIZE);
-    */
 
     // detect bullet hits on targets
     var ax, ay, ar, lx, ly;
