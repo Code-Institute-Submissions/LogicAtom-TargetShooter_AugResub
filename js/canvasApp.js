@@ -25,6 +25,8 @@ const HUNTER_BLINK_DUR = 0.1; // duration in seconds of a single blink during hu
 const HUNTER_EXPLODE_DUR = 0.4; // duration of the hunter's explosion in seconds. 0.3 = default
 const FRICTION = 0.5; // friction coefficient (0 = no friction, 1 = lots of friction, 0.7 = default)
 
+const SOUND_ON = false; // rotates game sounds on and off, false = off, true = on. on = default
+const MUSIC_ON = false; // rotates game music background on and off, true = on, false = off. on = default
 const ROTATE_SPEED = 360; // rotate speed in degrees per second. 360 = default
 const SHOW_CENTER_DOT = false; // show or hide hunter's center dot of gravity. false = default. true is for debugging.
 const SHOW_BOUNDING = false; // show or hide collision bounding boxes. false = default.
@@ -69,7 +71,21 @@ function canvasApp() {
   // set up the game loop
   setInterval(update, 1000 / FPS);
 
+  /* ************** AUDIO - SECTION BEGINNING ************** */
+
+  // set up sound effects
+  // associated with function Sound(), which is right above the update function
+  var sfxBullet = new Sound("sounds/bullethitwav.mp3", 5, 0.5);
+  var sfxExplode = new Sound("sounds/explode2.mp3"); // associated with function explodeHunter()
+  var sfxHit = new Sound("sounds/hit.mp3", 5);
+  var sfxAccelerate = new Sound("sounds/accelerate.m4a");
+
+  // set up the music
+  var music = new Music("sounds/music-low.m4a", "sounds/music-high.m4a");
+  // make the music incrementally faster
   var targetsLeft, targetsTotal; // a ratio of how many there are left compared to the total(to use as a guide)
+
+  /* ************** AUDIO - SECTION ENDING ************** */
 
   /* drawTargets, builds targets at random coordinates on the canvas (canv.width and canv.height) */
   function drawTargets() {
@@ -117,6 +133,12 @@ function canvasApp() {
 
     // destroy the target
     targets.splice(index, 1);
+    sfxHit.play();
+
+    // calculate the ratio of remaining targets to determine music tempo
+    targetsLeft--; // decrement
+    // call the function on music called setTargetRatio, and then in there the ratio is calculated..  targetsLeft == 0 // ? (if true then ratio = 1, reset ratio to 1), : else. // targetsLeft / targetsTotal = find the actual ratio
+    music.setTargetRatio(targetsLeft == 0 ? 1 : targetsLeft / targetsTotal);
 
     // new level when no more targets
     if (targets.length == 0) {
@@ -151,6 +173,7 @@ function canvasApp() {
 
   function explodeHunter() {
     hunter.explodeTime = Math.ceil(HUNTER_EXPLODE_DUR * FPS);
+    sfxExplode.play();
   }
 
   function gameOver() {
@@ -242,7 +265,7 @@ function canvasApp() {
         break;
     }
   }
-/*
+
   function setupGamePadController() {
 
     document.addEventListener('touchmove', (event) => {
@@ -275,7 +298,7 @@ function canvasApp() {
     ACCELERATE_BUTTON.addEventListener("touchend", () => {
       keysArray[KEY_UP_ARROW] = false;
     });
-  } */
+  }
 
   /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
 
@@ -361,18 +384,82 @@ function canvasApp() {
         dist: 0,
         explodeTime: 0,
       });
-     
+      sfxBullet.play();
     }
     // prevent further shooting
     hunter.canShoot = false;
   }
 
-  
+  // the speed of the beat increases as the game progresses
+  function Music(srcLow, srcHigh) {
+    this.soundLow = new Audio(srcLow);
+    this.soundHigh = new Audio(srcHigh);
+    this.low = true; // keep track of what audio were playing
+    this.tempo = 1.0; // seconds per beat (keep track of speed of audio)
+    this.beatTime = 0; // frames left until next beat (countdown the tempo)
+
+    this.play = function () {
+      if (MUSIC_ON) {
+        // if MUSIC_ON = true then do all of this
+        if (this.low) {
+          // play the Low sound
+          this.soundLow.play();
+        } else {
+          // otherwise
+          // play the High sound
+          this.soundHigh.play();
+        }
+        this.low = !this.low; // switch between the two sounds (switches true to false and false to true)
+      }
+    };
+
+    // this completes the tempo changing
+    this.setTargetRatio = function (ratio) {
+      this.tempo = 1.0 - 0.75 * (1.0 - ratio); // when ratio is 0, 1-0=1, .75*1=.75, 1-.75=.25 ::: the fastest rate will be .25 which is 4 beats per second
+    };
+
+    // countdown the tempo beat
+    this.tick = function () {
+      // called every frame
+      if (this.beatTime == 0) {
+        // 0 = its counting down every frame immediately
+        this.play(); // play current sound
+        this.beatTime = Math.ceil(this.tempo * FPS); // reset the beat time., Math.ceil keeps it as an integer. FPS = framerate. (ex: current tempo is 1 and framerate is 30 = 30 ticks until the sound is played(1 second))
+      } else {
+        // so doesnt equal zero
+        this.beatTime--; // decrement it
+      }
+    };
+  }
+
+  function Sound(src, maxStreams = 1, vol = 1.0) {
+    this.streamNum = 0; // keep track of which stream is currently being played
+    this.streams = []; // empty array keeps track of each stream
+    for (var i = 0; i < maxStreams; i++) {
+      // to populate the array
+      this.streams.push(new Audio(src)); // push to that array, src = argument
+      this.streams[i].volume = vol; // set the volume level
+    }
+
+    this.play = function () {
+      if (SOUND_ON) {
+        this.streamNum = (this.streamNum + 1) % maxStreams; // cycle threw each of the streams and find the modulus of the maxStreams
+        this.streams[this.streamNum].play(); // the element number .play is the in-built play function
+      }
+    };
+
+    this.stop = function () {
+      this.streams[this.streamNum].pause();
+      this.streams[this.streamNum].currentTime = 0;
+    };
   }
 
   function update() {
     var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
     var exploding = hunter.explodeTime > 0; //  > 0 means the hunter is exploding
+
+    // tick the music
+    music.tick();
 
     ctx.fillStyle = "black"; // canvas background color
 
@@ -383,6 +470,7 @@ function canvasApp() {
       // added && !hunter.dead, which combined with keyUp and keyDown ends the game
       hunter.accelerate.x += (HUNTER_ACCELERATE * Math.cos(hunter.a)) / FPS;
       hunter.accelerate.y -= (HUNTER_ACCELERATE * Math.sin(hunter.a)) / FPS;
+      sfxAccelerate.play(); // this sound will continue when forward key is released, need a way to stop the sound
 
       // draw the accelerater
       if (!exploding && blinkOn) {
@@ -412,6 +500,7 @@ function canvasApp() {
     } else {
       hunter.accelerate.x -= (FRICTION * hunter.accelerate.x) / FPS;
       hunter.accelerate.y -= (FRICTION * hunter.accelerate.y) / FPS;
+      sfxAccelerate.stop(); // stops the accelerate sound when the forward key is released.
     }
 
     //draw a traingular hunter
@@ -579,44 +668,45 @@ function canvasApp() {
         ctx.fill();
       }
     }
-
-    // draw the game text
-    if (textAlpha >= 0) {
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
-      ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-      ctx.fillText(text, canv.width / 2, canv.height * 0.75);
-      textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
-    } else if (hunter.dead) {
-      newGame();
-    }
-
-    // draw the lives
-    var lifeColor; // change color of remaining lives
-    for (var hunterLivesColor = 0; hunterLivesColor < lives; hunterLivesColor++) {
-      lifeColor = exploding && hunterLivesColor == lives - 1 ? "red" : "green"; // this line references var lifeColor above
-      drawHunter(
-        HUNTER_SIZE + hunterLivesColor * HUNTER_SIZE * 1.2,
-        HUNTER_SIZE,
-        0.5 * Math.PI,
-        lifeColor
-      );
-    }
-
-    // draw the score
-    ctx.textAlign = "right";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "magenta";
-    ctx.font = TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
-    ctx.fillText(score, canv.width - HUNTER_SIZE / 2, HUNTER_SIZE);
-
-    // draw the high score
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "blue";
-    ctx.font = TEXT_SIZE * 0.75 + "px courier"; // courier font is only font that works on all platforms
-    ctx.fillText("High Score " + scoreHigh, canv.width / 2, HUNTER_SIZE);
+    /*
+        // draw the game text
+        if (textAlpha >= 0) {
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "rgba(255, 255, 255, " + textAlpha + ")";
+          ctx.font = "small-caps " + TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
+          ctx.fillText(text, canv.width / 2, canv.height * 0.75);
+          textAlpha -= 1.0 / TEXT_FADE_TIME / FPS;
+        } else if (hunter.dead) {
+          newGame();
+        }
+    
+        // draw the lives
+        var lifeColor; // change color of remaining lives
+        for (var hunterLivesColor = 0; hunterLivesColor < lives; hunterLivesColor++) {
+          lifeColor = exploding && hunterLivesColor == lives - 1 ? "red" : "green"; // this line references var lifeColor above
+          drawHunter(
+            HUNTER_SIZE + hunterLivesColor * HUNTER_SIZE * 1.2,
+            HUNTER_SIZE,
+            0.5 * Math.PI,
+            lifeColor
+          );
+        }
+    
+        // draw the score
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "magenta";
+        ctx.font = TEXT_SIZE + "px courier"; // courier font is only font that works on all platforms
+        ctx.fillText(score, canv.width - HUNTER_SIZE / 2, HUNTER_SIZE);
+    
+        // draw the high score
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "blue";
+        ctx.font = TEXT_SIZE * 0.75 + "px courier"; // courier font is only font that works on all platforms
+        ctx.fillText("High Score " + scoreHigh, canv.width / 2, HUNTER_SIZE);
+    */
 
     // detect bullet hits on targets
     var ax, ay, ar, lx, ly;
