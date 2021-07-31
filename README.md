@@ -31,10 +31,9 @@ Feature 2  - has interactive functionality via the keyboard arrow buttons.
 
 ### Features Left to Implement
 = Mouse functionality
-= Trackpad functionality
-= Audio controls
+Touch interaction
 
-#### Currently fixing
+#### Currently fixing = 
 = Mouse functionality
 = Touch functionality
 
@@ -52,12 +51,16 @@ Game window screen attempting to move the lives and score off of the main game s
 
 http://mobilehtml5.org/ = used to verify compatibility features.
 
-#### Currently testing
+#### Currently testing ...I tried my best for over 8 months to get touch screen events to work with html5 canvas, but I failed at being successful.
 = RWD Canvas API controls, using code referenced from a physical book named: HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
 
 ## Deployment
 
+https://github.com/LogicAtom/TargetShooter/deployments/activity_log?environment=github-pages
+
 I uploaded the project directly to Github using Github Desktop and pushed the project to Github Pages.
+
+Change of plans...i used GitPod this time for resubmission. :)
 
 ## Credits
 Anthony Kozloski - Coder
@@ -79,5 +82,7 @@ Ed Logg and Lyle Rains for being the original creators of Asteroids
 HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
 
 https://modernizr.com/
+
+Code Institute
 
 
