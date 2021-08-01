@@ -2,7 +2,7 @@
 
 // CONSTANTS: constants start at their default inital values always
 const FPS = 30; // frames per second of animations
-const GAME_LIVES = 3; // starting number of game lives, default = 3
+const GAME_LIVES = 99; // starting number of game lives, default = 3
 
 const BULLET_MAX = 5; // maximum number of bullets on the screen at any one time, default = 10
 const BULLET_SPD = 1000; // speed of bullets in pixels per second, 500 = default
@@ -34,10 +34,6 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
-var mouseX;
-var mouseY;
-var touchX;
-var touchY;
 
 window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
@@ -64,6 +60,10 @@ function canvasApp() {
 
   }
 
+  var mouseX;
+  var mouseY;
+  var touchX;
+  var touchY;
 
   function allMoveHandler(x, y) {
     mouseX = x;
