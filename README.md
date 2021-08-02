@@ -17,7 +17,8 @@ I designed the game to be a fun and easy to play game for all age groups, both f
 
     Peggy, a middle aged female, public High School Mathematics Teacher is looking for new ways to get her students to enjoy Math. She does an internet search for a web application game that uses core trigonometry and discrete math by using JavaScript. My project game sounds interesting to her so she tries it and really likes it. She asks the programmer (me) for the code to share in her daily classes. The students readily enjoy the game playability and enjoyment factor. They become active listeners to her math instructions everyday.
 ******
-### This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included as a pdf file in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
+### Wireframes, mockups, diagrams etc. that were created as part of the design process.
+https://github.com/LogicAtom/TargetShooter/tree/main/wireframes/versions/version2
 
 #### Features
 Feature 1  - allows users to play a fun game
@@ -74,15 +75,17 @@ Vanilla JavaScript - https://www.javascript.com/
 I took pictures of my design wireframe, mockup, and diagram from my dry erase board at home.
 
 ### Acknowledgements
+Code Institute - for having me create a JavaScript - Frontend interactive project
+
 I got inspiration for this project from the Asteroids game tutorial on youtube from freecodecamp
 - https://www.youtube.com/watch?v=H9CSWMxJx84
 
-Ed Logg and Lyle Rains for being the original creators of Asteroids
+Ed Logg and Lyle Rains for being the original creators of Atari Asteroids
 
 HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
 
 https://modernizr.com/
 
-Code Institute
+http://mobilehtml5.org/
 
 
