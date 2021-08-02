@@ -1,6 +1,6 @@
 Target Shooter
 
-This is a JavaScript game where the player commands a Hunter object that the player moves around the screen and shoots at moving targets. The targets break apart into incrementally smaller sized targets. A point system is awarded and a high score is saved across browser sessions.
+This is a JavaScript game where the player commands a Space Shooter Ship that the player moves around the screen and shoots at moving targets. The targets break apart into incrementally smaller sized targets. A point system is awarded and a high score is saved across browser sessions.
 
 After all target objects are destroyed, the next level loads with increasing difficulty and more faster targets. The object of the game is purely entertainment related.
 
@@ -11,6 +11,8 @@ Keep playing to try to beat your high score!
 ## UX
  
 I designed the game to be a fun and easy to play game for all age groups, both females and males. It was designed for desktop computer and laptop pc systems that have physical keyboards. The game is most likely to draw more of a male interest for those who enjoy vintage style gaming on older systems. The way this game operates is easy to understand and anyone can become a skilled Hunter in a very short period of time. My project uses simple controls that are intutitive and effective which makes it one of the best shooter games out there. 
+
+I really wanted to create an accessiblity user experience. Which is the primary reason that I used the keyboard arrow keys for controls. And the down arrow to shoot. This ensure one-handed operation of all controls in the game.
 
 ### User Stories/Extended Scenarios
     An average adult male named Tony, is looking for a game to play to de-stress while waiting for a virtual job interviewer to meet with him. Tony finds this internet game and tries it out. The simple control structure and enjoyability create the perfect environment and while playing he forgets about the cares of the outside world while he blasts away targets. The interviewer meets with Tony and sees that he is much calmer and confident to openly talk and share about his work experience. Tony gets the job and smiles, and bookmarks my game and shares his experience with friends who then become avid enthusiasts.
