@@ -10,6 +10,7 @@
     .gamename {
         margin-left: 100px;
         margin-top: 0px;
+        color: #000000;
     }
         
          /* The Modal (background) */
@@ -50,7 +51,11 @@
   cursor: pointer;
 } 
 
-        #canvas {
+   /* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+ #canvas {
             overflow: hidden;
             image-rendering: optimizeSpeed;
             -ms-interpolation-mode: nearest-neighbor;
@@ -58,24 +63,7 @@
             position: absolute;
             left: 50;
             top: 50;
-        }
-           /* webkit-optimize-contrast;
-			    width: 100%;
-			    height: 100%;
-
-                :webkit-full-screen {
-            width: 100%;
-            height: 100%;
-        }
-		} */
-		
-        
-
-   /* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-/* STYLES GO HERE */
+       }
 }
 
 
@@ -83,44 +71,32 @@ and (max-device-width : 480px) {
 @media only screen
 and (min-device-width : 768px)
 and (max-device-width : 1024px) {
-/* STYLES GO HERE */
+ #canvas {
+            overflow: hidden;
+            image-rendering: optimizeSpeed;
+            -ms-interpolation-mode: nearest-neighbor;
+            -webkit-full-screen: width = 100%, height = 100%;
+            position: absolute;
+            left: 50;
+            top: 50;
+            width: 100%;
+            height: 100%;
+        }
 }
 
 
 /* Desktops and laptops ----------- */
 @media only screen
 and (min-width : 1224px) {
-/* STYLES GO HERE */
+ #canvas {
+            overflow: hidden;
+            image-rendering: optimizeSpeed;
+            -ms-interpolation-mode: nearest-neighbor;
+            -webkit-full-screen: width = 100%, height = 100%;
+            position: absolute;
+            left: 50;
+            top: 50;
+            width: 100%;
+            height: 80%;
+        }
 }
-
-/* Large screens ----------- */
-@media only screen
-and (min-width : 1824px) {
-/* STYLES GO HERE */
-}
-
-/* iPhone 5 (portrait & landscape)----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 568px) {
-/* STYLES GO HERE */
-}
-
-
-
-   /* #canvas {
-       margin: 20px;
-       padding: 20px;
-       background: #ffffff;
-       border: thin inset #aaaaaa;
-       viewport-fit: cover;
-   } */
-
-
-   /* .canvas {
-       position: fixed;
-       left: 0;
-       top: 0;
-       width: 100%;
-       height: 100%;
-   } */

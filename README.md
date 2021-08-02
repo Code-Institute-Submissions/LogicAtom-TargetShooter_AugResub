@@ -50,13 +50,25 @@ I had 8 other testers with different devices test as well. = Results, fully func
 
 Game window screen attempting to move the lives and score off of the main game screen...I tried changing the drawScreen function, ctx.fillRect attribute for height -20px = result is a failure as the targets and the ship can travel into that empty space and cause unexpected visual distortions.
 
-http://mobilehtml5.org/ = used to verify compatibility features.
+Compatibility Testing:
+
+http://mobilehtml5.org/
+
+Code Errors Testing:
 
 DevTools > Toggle Device Toolbar
 
 https://www.lambdatest.com/
 
-http://validator.w3.org/
+https://jshint.com/
+
+Validation Testing:
+
+http://validator.w3.org/ (HTML5)
+https://jigsaw.w3.org/css-validator/ (CSS3)
+
+
+Performance Testing:
 
 http://developers.google.com/speed/pagespeed/insights/
 
@@ -87,6 +99,8 @@ Download .zip file:  https://github.com/LogicAtom/TargetShooter/archive/refs/hea
 ## Credits
 Anthony Kozloski - Coder
 
+Code Institute - FullStack Boot Camp
+
 ### Content
 HTML5 Canvas - https://en.wikipedia.org/wiki/HTML5, https://html.spec.whatwg.org/multipage/
 CSS3 - https://www.w3.org/Style/CSS/Overview.en.html
@@ -100,6 +114,8 @@ I took pictures of my design wireframe, mockup, and diagram from my dry erase bo
 
 ### Acknowledgements
 Code Institute - for having me create a JavaScript - Frontend interactive project
+
+Code Institute - Tutors for all your help..you rock!
 
 I got inspiration for this project from the Asteroids game tutorial on youtube from freecodecamp
 - https://www.youtube.com/watch?v=H9CSWMxJx84
@@ -126,13 +142,6 @@ https://www.lambdatest.com/
 
 http://validator.w3.org/
 
+
 http://developers.google.com/speed/pagespeed/insights/
-
-
-
-
-
-
-
-
 

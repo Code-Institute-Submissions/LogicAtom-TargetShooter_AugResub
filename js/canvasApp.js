@@ -44,21 +44,21 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on the button, open the modal
-btn.onclick = function () {
+btn.onclick = function() {
   modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function () {
+span.onclick = function() {
   modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
+window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
-}
+} 
 
 window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
@@ -151,9 +151,9 @@ function canvasApp() {
   var sfxHit = new Sound("sounds/hit.mp3", 5);
   var sfxAccelerate = new Sound("sounds/accelerate.m4a");
 
-  // set up the music
-  var music = new Music("sounds/music-low.m4a", "sounds/music-high.m4a");
-  // make the music incrementally faster
+  
+  var music = new Music("assets/placeholder", "assets/placeholder");
+  
   var targetsLeft, targetsTotal; // a ratio of how many there are left compared to the total(to use as a guide)
 
   /* ************** AUDIO - SECTION ENDING ************** */
@@ -529,9 +529,7 @@ function canvasApp() {
     var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
     var exploding = hunter.explodeTime > 0; //  > 0 means the hunter is exploding
 
-    // tick the music
-    music.tick();
-
+    
     ctx.fillStyle = "black"; // canvas background color
 
     ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
