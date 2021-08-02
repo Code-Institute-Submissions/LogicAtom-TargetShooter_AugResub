@@ -94,13 +94,6 @@ via GitHub Desktop: x-github-client://openRepo/https://github.com/LogicAtom/Targ
 Download .zip file:  https://github.com/LogicAtom/TargetShooter/archive/refs/heads/main.zip
 
 
-
-
-## Credits
-Anthony Kozloski - Coder
-
-Code Institute - FullStack Boot Camp
-
 ### Content
 HTML5 Canvas - https://en.wikipedia.org/wiki/HTML5, https://html.spec.whatwg.org/multipage/
 CSS3 - https://www.w3.org/Style/CSS/Overview.en.html
@@ -111,8 +104,15 @@ Modernizr JS - Compatibility - https://modernizr.com/
 ### Media
 I took pictures of my design wireframe, mockup, and diagram from my dry erase board at home.
 
+Audio files are from: StarCraft 2 by Blizzard North. and by https://www.youtube.com/watch?v=H9CSWMxJx84
 
-### Acknowledgements
+FavIcon from:  https://favicon.io/emoji-favicons/direct-hit
+
+### Credits and Acknowledgements
+
+Anthony Kozloski - Coder
+
+Code Institute - FullStack Boot Camp
 Code Institute - for having me create a JavaScript - Frontend interactive project
 
 Code Institute - Tutors for all your help..you rock!
@@ -144,4 +144,6 @@ http://validator.w3.org/
 
 
 http://developers.google.com/speed/pagespeed/insights/
+
+https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal
 
