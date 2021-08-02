@@ -52,6 +52,14 @@ Game window screen attempting to move the lives and score off of the main game s
 
 http://mobilehtml5.org/ = used to verify compatibility features.
 
+DevTools > Toggle Device Toolbar
+
+https://www.lambdatest.com/
+
+http://validator.w3.org/
+
+http://developers.google.com/speed/pagespeed/insights/
+
 #### Currently testing ...I tried my best for over 8 months to get touch screen events to work with html5 canvas, but I failed at being successful.
 = RWD Canvas API controls, using code referenced from a physical book named: HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O'REILLY publishing, Authors: Steve Fulton & Jeff Fulton, ISBN 978-1-449-33498-7
 
@@ -87,5 +95,28 @@ HTML5 Canvas - Native Interactivity and Animation for the Web, 2nd edition, by O
 https://modernizr.com/
 
 http://mobilehtml5.org/
+
+Physical books:
+assets/img/20210716_114512.jpg
+assets/img/20210731_082235.jpg
+
+HTML and CSS by: Joe Casabona 9th edition - ISBN-13=978-0-13-670256-6 = Testing sites
+https://gs.statcounter.com/platform-market-share/desktop-mobile-tablet/europe
+https://gs.statcounter.com/screen-resolution-stats
+
+DevTools > Toggle Device Toolbar
+
+https://www.lambdatest.com/
+
+http://validator.w3.org/
+
+http://developers.google.com/speed/pagespeed/insights/
+
+
+
+
+
+
+
 
 
