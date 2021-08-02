@@ -1,5 +1,7 @@
 // jshint esversion: 6
+ 
 
+/* ************** GAME DEFAULTS - SECTION START ************** */
 // CONSTANTS: constants start at their default inital values always
 const FPS = 30; // frames per second of animations
 const GAME_LIVES = 99; // starting number of game lives, default = 3
@@ -25,14 +27,15 @@ const HUNTER_BLINK_DUR = 0.1; // duration in seconds of a single blink during hu
 const HUNTER_EXPLODE_DUR = 0.4; // duration of the hunter's explosion in seconds. 0.3 = default
 const FRICTION = 0.5; // friction coefficient (0 = no friction, 1 = lots of friction, 0.7 = default)
 
-const SOUND_ON = false; // rotates game sounds on and off, false = off, true = on. on = default
-const MUSIC_ON = false; // rotates game music background on and off, true = on, false = off. on = default
+const SOUND_ON = true; // rotates game sounds on and off, false = off, true = on. on = default
+const MUSIC_ON = true; // rotates game music background on and off, true = on, false = off. on = default
 const ROTATE_SPEED = 360; // rotate speed in degrees per second. 360 = default
 const SHOW_CENTER_DOT = false; // show or hide hunter's center dot of gravity. false = default. true is for debugging.
 const SHOW_BOUNDING = false; // show or hide collision bounding boxes. false = default.
 const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
+/* ************** GAME DEFAULTS - SECTION START ************** */
 
 // Get the modal
 var modal = document.getElementById("myModal");
@@ -113,6 +116,8 @@ function canvasApp() {
 
   /* ************** AUDIO - SECTION ENDING ************** */
 
+
+  /* ************** TARGETS - SECTION START ************** */
   /* drawTargets, builds targets at random coordinates on the canvas (canv.width and canv.height) */
   function drawTargets() {
     targets = [];
@@ -173,6 +178,8 @@ function canvasApp() {
     }
   }
 
+  /* ************** TARGETS - SECTION ENDING ************** */
+
   /* *********  HUNTER SIZE ************ */
   function drawHunter(x, y, a, color = "limegreen") {
     ctx.strokeStyle = color;
@@ -215,7 +222,7 @@ function canvasApp() {
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
 
-  
+
   // event listeners
   function keyDown(/** @type [KeyboardEvent] */ ev) {
     if (hunter.dead) {
@@ -278,10 +285,10 @@ function canvasApp() {
     }
   }
 
-  
+
   /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
 
-
+  /* ************** VELOCITY - SECTION START ************** */
   // x velocity and y velocity. These are values for how far a sprite will move the next frame or in the next second.
   function newTarget(x, y, r) {
     var lvlMult = 1 + 0.1 * level;
@@ -308,6 +315,10 @@ function canvasApp() {
     }
     return targets;
   }
+
+  /* ************** VELOCITY - SECTION ENDING ************** */
+
+  /* ************** RESPAWN - SECTION ENDING ************** */
 
   function newGame() {
     level = 0;
@@ -351,6 +362,8 @@ function canvasApp() {
     };
   }
 
+  /* ************** RESPAWN - SECTION ENDING ************** */
+
   function shootBullet() {
     // create the bullet object
     if (hunter.canShoot && hunter.bullets.length < BULLET_MAX) {
@@ -368,6 +381,8 @@ function canvasApp() {
     // prevent further shooting
     hunter.canShoot = false;
   }
+
+  /* ************** MUSIC - SECTION START ************** */
 
   // the speed of the beat increases as the game progresses
   function Music(srcLow, srcHigh) {
@@ -432,6 +447,11 @@ function canvasApp() {
       this.streams[this.streamNum].currentTime = 0;
     };
   }
+
+  /* ************** MUSIC - SECTION ENDING ************** */
+
+
+  /* ************** UPDATE - SECTION START ************** */
 
   function update() {
     var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
@@ -808,3 +828,7 @@ function canvasApp() {
     }
   }
 }
+
+/* ************** UPDATE - SECTION ENDING ************** */
+
+/* ************** END OF GAME CODE ************** */
