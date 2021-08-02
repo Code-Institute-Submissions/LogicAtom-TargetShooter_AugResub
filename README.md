@@ -22,9 +22,12 @@ I really wanted to create an accessiblity user experience. Which is the primary 
 ### Wireframes, mockups, diagrams etc. that were created as part of the design process.
 https://github.com/LogicAtom/TargetShooter/tree/main/wireframes/versions/version2
 
+Documentation for wireframes: I have included the wireframes in sequential order to show my direction for the layout, even though the final product doesn't use some of the elements. Its pretty self explanatory.
+
 #### Features
 Feature 1  - allows users to play a fun game
 Feature 2  - has interactive functionality via the keyboard arrow buttons.
+Feature 3  - one handed accessibilty controls.
  
 ##### Existing Features
 - Keyboard arrow controls
@@ -149,3 +152,11 @@ http://developers.google.com/speed/pagespeed/insights/
 
 https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal
 
+https://ian.hixie.ch/ (The Editor of the HTML5 Spec)
+
+I would personally like to thank my friends and family for putting up with me during the stress of building this project.
++ Anthony Kozloski: dad ...you taught me so much about life and I wanted to make a disabled person's game so you could play it. I didn't get it completed in time before you passed away. I love you and miss you.
++ Peggy Gallagher: <3 teacher/friend/time & space giver
++ Audrey Kozloski: mom ...thanks for all those amazing home cooked meals!  yum :)
++ Jeff Showers: neighbor/friend/additional game tester
++ Rosie(hamster/ninja warrior): my 2am school break entertainer
