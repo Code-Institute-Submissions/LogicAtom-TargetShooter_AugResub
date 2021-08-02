@@ -64,8 +64,7 @@
 } 
 
    /* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px) {
+@media only screen {
  #canvas {
             overflow: hidden;
             image-rendering: optimizeSpeed;
@@ -80,8 +79,7 @@ and (min-device-width : 320px) {
 
 
 /* Desktops and laptops ----------- */
-@media only screen
-and (min-width : 1224px) {
+@media only print {
  #canvas {
             overflow: hidden;
             image-rendering: optimizeSpeed;
