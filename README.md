@@ -50,6 +50,9 @@ Vanilla JavaScript - https://www.javascript.com/
 Modernizr - https://modernizr.com/
 
 ## Testing
+https://validator.w3.org/nu/?doc=https%3A%2F%2Flogicatom.github.io%2FTargetShooter%2F
+https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Flogicatom.github.io%2FTargetShooter%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en
+
 I have performed extensive testing on each and every step of this project.
 I had 8 other testers with different devices test as well. = Results, fully functional.
 
