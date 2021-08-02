@@ -1,4 +1,4 @@
-Target Hunter
+Target Shooter
 
 This is a JavaScript game where the player commands a Hunter object that the player moves around the screen and shoots at moving targets. The targets break apart into incrementally smaller sized targets. A point system is awarded and a high score is saved across browser sessions.
 
@@ -46,7 +46,7 @@ Modernizr - https://modernizr.com/
 
 ## Testing
 I have performed extensive testing on each and every step of this project.
-I had 4 other testers with different operating systems test as well and no errors.
+I had 8 other testers with different devices test as well. = Results, fully functional.
 
 Game window screen attempting to move the lives and score off of the main game screen...I tried changing the drawScreen function, ctx.fillRect attribute for height -20px = result is a failure as the targets and the ship can travel into that empty space and cause unexpected visual distortions.
 
@@ -69,7 +69,20 @@ https://github.com/LogicAtom/TargetShooter/deployments/activity_log?environment=
 
 I uploaded the project directly to Github using Github Desktop and pushed the project to Github Pages.
 
+Source = Local PC files
+Target = GitHub Repository (https://github.com/LogicAtom/TargetShooter)
+
 Change of plans...i used GitPod this time for resubmission. :)
+
+Deployment via GitPod using git 
+Alternate Deployment via Microsoft Visual Studio Code
+
+CLONING:  https://github.com/LogicAtom/TargetShooter.git (or) gh repo clone LogicAtom/TargetShooter
+via GitHub Desktop: x-github-client://openRepo/https://github.com/LogicAtom/TargetShooter
+Download .zip file:  https://github.com/LogicAtom/TargetShooter/archive/refs/heads/main.zip
+
+
+
 
 ## Credits
 Anthony Kozloski - Coder
@@ -78,9 +91,12 @@ Anthony Kozloski - Coder
 HTML5 Canvas - https://en.wikipedia.org/wiki/HTML5, https://html.spec.whatwg.org/multipage/
 CSS3 - https://www.w3.org/Style/CSS/Overview.en.html
 Vanilla JavaScript - https://www.javascript.com/
+Javascript Modal - https://www.w3schools.com/howto/howto_css_modals.asp
+Modernizr JS - Compatibility - https://modernizr.com/
 
 ### Media
 I took pictures of my design wireframe, mockup, and diagram from my dry erase board at home.
+
 
 ### Acknowledgements
 Code Institute - for having me create a JavaScript - Frontend interactive project
