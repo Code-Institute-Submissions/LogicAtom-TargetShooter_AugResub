@@ -34,39 +34,12 @@ const TEXT_FADE_TIME = 2.5; // text fade time in seconds. 2.5 = default
 const TEXT_SIZE = 40; // text font height in pixels. 40 = default
 const STOR_KEY_HSCORE = "highscore"; // save key for local storage of high score. "highscore" = default
 
-// Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-} 
 
 window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
 
   canvasApp();
 
-  canv.addEventListener("mousemove", onmousemove, false);
-  canv.addEventListener("touchmove", onTouchMove, false);
 }
 
 function canvasSupport() {
@@ -82,49 +55,6 @@ function canvasApp() {
   } else {
     canv = document.getElementById('canvas');
     ctx = canv.getContext('2d');
-
-  }
-
-  var mouseX;
-  var mouseY;
-  var touchX;
-  var touchY;
-
-  function allMoveHandler(x, y) {
-    mouseX = x;
-    mouseY = y;
-  }
-
-
-  function onmousemove(e) {
-    var xFactor = canv.width / window.innerWidth;
-    var yFactor = canv.height / window.innerHeight;
-
-    var mouseX1 = event.clientX - canv.offsetLeft;
-    var mouseY1 = event.clientY - canv.offsetTop;
-    mouseX = mouseX1 * xFactor;
-    mouseY = mouseY1 * yFactor;
-
-    allMoveHandler(mouseX, mouseY);
-  }
-
-  function onTouchMove(e) {
-    if (e.touches.item(0)) {
-      targetEvent = e.touches.item(0);
-    } else {
-      targetEvent = e;
-    }
-
-    touchX1 = targetEvent.clientX - canv.offsetLeft;
-    touchY1 = targetEvent.clientY - canv.offsetTop;
-    xFactor = canv.width / window.innerWidth;
-    yFactor = canv.height / window.innerHeight;
-    touchX = touchX1 * xFactor;
-    touchY = touchY1 * yFactor;
-
-    allMoveHandler(touchX, touchY);
-
-    e.preventDefault();
 
   }
 
@@ -146,14 +76,14 @@ function canvasApp() {
 
   // set up sound effects
   // associated with function Sound(), which is right above the update function
-  var sfxBullet = new Sound("sounds/bullethitwav.mp3", 5, 0.5);
-  var sfxExplode = new Sound("sounds/explode2.mp3"); // associated with function explodeHunter()
-  var sfxHit = new Sound("sounds/hit.mp3", 5);
-  var sfxAccelerate = new Sound("sounds/accelerate.m4a");
+  var sfxBullet = new Sound("assets/sounds/bullethitwav.mp3", 5, 0.5);
+  var sfxExplode = new Sound("assets/sounds/explode2.mp3"); // associated with function explodeHunter()
+  var sfxHit = new Sound("assets/sounds/hit.mp3", 5);
+  var sfxAccelerate = new Sound("assets/sounds/accelerate.m4a");
 
-  
-  var music = new Music("assets/placeholder", "assets/placeholder");
-  
+  // set up the music
+  var music = new Music("assets/sounds/music-low.m4a", "assets/sounds/music-high.m4a");
+  // make the music incrementally faster
   var targetsLeft, targetsTotal; // a ratio of how many there are left compared to the total(to use as a guide)
 
   /* ************** AUDIO - SECTION ENDING ************** */
@@ -260,21 +190,7 @@ function canvasApp() {
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
 
-  // This sets up all the event listeners for our <canvas> element so we can handle the touch events as they occur.
-  // When the page loads, the startup() function shown below will be called.
-  function startup() {
-    var el = document.getElementById("Canvas");
-    el.addEventListener("touchstart", handleStart, false);
-    el.addEventListener("touchend", handleEnd, false);
-    el.addEventListener("touchcancel", handleCancel, false);
-    el.addEventListener("touchmove", handleMove, false);
-  }
-
-  document.addEventListener("DOMContentLoaded", startup);
-  {
-
-  }
-
+  
   // event listeners
   function keyDown(/** @type [KeyboardEvent] */ ev) {
     if (hunter.dead) {
@@ -337,40 +253,7 @@ function canvasApp() {
     }
   }
 
-  function setupGamePadController() {
-
-    document.addEventListener('touchmove', (event) => {
-      event.preventDefault();
-    }, { passive: false });
-
-    LEFT_BUTTON.addEventListener("touchstart", () => {
-      keysArray[KEY_LEFT_ARROW] = true;
-    });
-    LEFT_BUTTON.addEventListener("touchend", () => {
-      keysArray[KEY_LEFT_ARROW] = false;
-    });
-    RIGHT_BUTTON.addEventListener("touchstart", () => {
-      keysArray[KEY_RIGHT_ARROW] = true;
-    });
-    RIGHT_BUTTON.addEventListener("touchend", () => {
-      keysArray[KEY_RIGHT_ARROW] = false;
-    });
-    FIRE_BUTTON.addEventListener("touchstart", () => {
-      if (hunter.visible) {
-        if (_soundfxOn == ON) {
-          FIRE_SOUND.play();
-        }
-        bulletsArray.push(new Bullet(hunter.angle));
-      }
-    });
-    ACCELERATE_BUTTON.addEventListener("touchstart", () => {
-      keysArray[KEY_UP_ARROW] = true;
-    });
-    ACCELERATE_BUTTON.addEventListener("touchend", () => {
-      keysArray[KEY_UP_ARROW] = false;
-    });
-  }
-
+  
   /* ************** INTERACTIVE CONTROLS - SECTION END ************** */
 
 
@@ -529,7 +412,9 @@ function canvasApp() {
     var blinkOn = hunter.blinkNum % 2 == 0; // makes blinking an even number
     var exploding = hunter.explodeTime > 0; //  > 0 means the hunter is exploding
 
-    
+    // tick the music
+    music.tick();
+
     ctx.fillStyle = "black"; // canvas background color
 
     ctx.fillRect(0, 0, canv.width, canv.height); // draw the background
