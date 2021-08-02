@@ -9,8 +9,6 @@ html, body {
 
 #canvas {
             overflow: hidden;
-            image-rendering: optimizeSpeed;
-            -ms-interpolation-mode: nearest-neighbor;
             position: absolute;
             left: 50px;
             top: 50px;
